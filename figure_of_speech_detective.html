@@ -1,0 +1,3449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+  <title>Figure of Speech Detective Academy – Crack the Language Code!</title>
+  <style>
+    /* =========================================================
+       CSS VARIABLES & THEME SETUP
+       Colors matching project specifications:
+       Deep navy: #172554, Bright blue: #3B82F6, Golden yellow: #FBBF24,
+       Coral: #FB7185, Mint green: #34D399, Light lavender: #C4B5FD, Warm cream: #FFF7E6
+       ========================================================= */
+    :root {
+      --navy: #172554;
+      --navy-dark: #0f172a;
+      --navy-light: #1e3a8a;
+      --blue: #3B82F6;
+      --blue-dark: #2563eb;
+      --blue-light: #60a5fa;
+      --yellow: #FBBF24;
+      --yellow-dark: #d97706;
+      --yellow-light: #fde68a;
+      --coral: #FB7185;
+      --coral-dark: #e11d48;
+      --mint: #34D399;
+      --mint-dark: #059669;
+      --mint-light: #a7f3d0;
+      --lavender: #C4B5FD;
+      --lavender-dark: #8b5cf6;
+      --cream: #FFF7E6;
+      --cream-card: #ffffff;
+      --text-dark: #0f172a;
+      --text-muted: #475569;
+      --border-radius-lg: 24px;
+      --border-radius-md: 16px;
+      --border-radius-sm: 10px;
+      --shadow-chunky: 0 8px 0 rgba(15, 23, 42, 0.25);
+      --shadow-glow: 0 0 25px rgba(251, 191, 36, 0.5);
+      --font-family: 'Comic Sans MS', 'Fredoka', 'Quicksand', 'Nunito', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+
+    body {
+      font-family: var(--font-family);
+      background-color: var(--navy);
+      background-image: 
+        radial-gradient(circle at 15% 20%, rgba(59, 130, 246, 0.25) 0%, transparent 35%),
+        radial-gradient(circle at 85% 80%, rgba(251, 191, 36, 0.2) 0%, transparent 35%),
+        radial-gradient(circle at 50% 50%, rgba(196, 181, 253, 0.1) 0%, transparent 60%);
+      color: var(--text-dark);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Classroom Smart Board optimization: prevent bounce, smooth typography */
+    html {
+      font-size: 16px;
+      touch-action: manipulation;
+    }
+
+    @media (min-width: 1400px) {
+      html { font-size: 18px; }
+    }
+
+    /* Background decorative detective doodles */
+    .bg-clues {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .floating-doodle {
+      position: absolute;
+      opacity: 0.12;
+      animation: floatDoodle 16s ease-in-out infinite alternate;
+    }
+
+    @keyframes floatDoodle {
+      0% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-30px) rotate(15deg); }
+      100% { transform: translateY(15px) rotate(-10deg); }
+    }
+
+    /* Top Navigation & Smart Board Controls */
+    header.academy-header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(23, 37, 84, 0.92);
+      backdrop-filter: blur(8px);
+      border-bottom: 3px solid rgba(251, 191, 36, 0.4);
+      padding: 0.6rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .academy-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      color: var(--yellow);
+      font-weight: 800;
+      font-size: 1.3rem;
+      letter-spacing: 0.5px;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.4);
+      cursor: pointer;
+    }
+
+    .academy-logo svg {
+      width: 44px;
+      height: 44px;
+      flex-shrink: 0;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+    }
+
+    .header-center-info {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .badge-score-pill {
+      background: linear-gradient(135deg, #FBBF24, #f59e0b);
+      color: #78350f;
+      font-weight: 900;
+      font-size: 1.15rem;
+      padding: 0.4rem 1.1rem;
+      border-radius: 999px;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      box-shadow: 0 4px 0 #b45309;
+      border: 2px solid #fff;
+    }
+
+    .badge-score-pill svg {
+      width: 22px;
+      height: 22px;
+      fill: #78350f;
+    }
+
+    .header-controls {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    /* Smart Board Action Buttons - Minimum 65px height on main actions, minimum 52px for header tools */
+    .ctrl-btn {
+      min-width: 54px;
+      height: 54px;
+      background: rgba(255, 255, 255, 0.12);
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-radius: 14px;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+      box-shadow: 0 3px 0 rgba(0,0,0,0.3);
+    }
+
+    .ctrl-btn:hover, .ctrl-btn:focus {
+      background: rgba(255, 255, 255, 0.25);
+      transform: translateY(-2px);
+      box-shadow: 0 5px 0 rgba(0,0,0,0.4);
+      outline: none;
+    }
+
+    .ctrl-btn:active {
+      transform: translateY(2px);
+      box-shadow: 0 1px 0 rgba(0,0,0,0.4);
+    }
+
+    .ctrl-btn svg {
+      width: 26px;
+      height: 26px;
+      fill: currentColor;
+    }
+
+    /* Screen Layout Architecture */
+    main.game-container {
+      flex: 1;
+      max-width: 1400px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 1.5rem;
+      position: relative;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .screen {
+      display: none;
+      animation: fadeInScreen 0.4s ease-out forwards;
+      width: 100%;
+    }
+
+    .screen.active {
+      display: block;
+    }
+
+    @keyframes fadeInScreen {
+      from { opacity: 0; transform: scale(0.98) translateY(12px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    /* Big Chunky Touch Buttons - Strictly >= 65px for Smart Board accessibility */
+    .btn-chunky {
+      min-height: 68px;
+      padding: 0.9rem 2.2rem;
+      font-family: inherit;
+      font-size: 1.35rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border-radius: 20px;
+      cursor: pointer;
+      border: 3px solid #ffffff;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.8rem;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.2s ease;
+      position: relative;
+      text-align: center;
+      line-height: 1.2;
+    }
+
+    .btn-chunky:hover, .btn-chunky:focus {
+      transform: translateY(-3px);
+      outline: none;
+    }
+
+    .btn-chunky:active {
+      transform: translateY(4px);
+    }
+
+    .btn-gold {
+      background: linear-gradient(180deg, #FDE68A 0%, #FBBF24 50%, #D97706 100%);
+      color: #451a03;
+      box-shadow: 0 8px 0 #92400e, 0 12px 20px rgba(0,0,0,0.3);
+      text-shadow: 0 1px 1px rgba(255,255,255,0.6);
+    }
+    .btn-gold:hover {
+      box-shadow: 0 10px 0 #92400e, 0 16px 25px rgba(251, 191, 36, 0.4);
+    }
+    .btn-gold:active {
+      box-shadow: 0 3px 0 #92400e, 0 6px 12px rgba(0,0,0,0.3);
+    }
+
+    .btn-mint {
+      background: linear-gradient(180deg, #6ee7b7 0%, #34D399 50%, #059669 100%);
+      color: #064e3b;
+      box-shadow: 0 8px 0 #047857, 0 12px 20px rgba(0,0,0,0.3);
+      text-shadow: 0 1px 1px rgba(255,255,255,0.5);
+    }
+    .btn-mint:hover {
+      box-shadow: 0 10px 0 #047857, 0 16px 25px rgba(52, 211, 153, 0.4);
+    }
+    .btn-mint:active {
+      box-shadow: 0 3px 0 #047857, 0 6px 12px rgba(0,0,0,0.3);
+    }
+
+    .btn-blue {
+      background: linear-gradient(180deg, #93c5fd 0%, #3B82F6 50%, #1d4ed8 100%);
+      color: #ffffff;
+      box-shadow: 0 8px 0 #1e40af, 0 12px 20px rgba(0,0,0,0.3);
+      text-shadow: 0 2px 2px rgba(0,0,0,0.3);
+    }
+    .btn-blue:hover {
+      box-shadow: 0 10px 0 #1e40af, 0 16px 25px rgba(59, 130, 246, 0.4);
+    }
+    .btn-blue:active {
+      box-shadow: 0 3px 0 #1e40af, 0 6px 12px rgba(0,0,0,0.3);
+    }
+
+    .btn-coral {
+      background: linear-gradient(180deg, #fda4af 0%, #FB7185 50%, #e11d48 100%);
+      color: #ffffff;
+      box-shadow: 0 8px 0 #be123c, 0 12px 20px rgba(0,0,0,0.3);
+      text-shadow: 0 2px 2px rgba(0,0,0,0.3);
+    }
+    .btn-coral:hover {
+      box-shadow: 0 10px 0 #be123c, 0 16px 25px rgba(251, 113, 133, 0.4);
+    }
+    .btn-coral:active {
+      box-shadow: 0 3px 0 #be123c, 0 6px 12px rgba(0,0,0,0.3);
+    }
+
+    .btn-glow-pulse {
+      animation: pulseGlowBtn 2s infinite ease-in-out;
+    }
+
+    @keyframes pulseGlowBtn {
+      0%, 100% { box-shadow: 0 8px 0 #92400e, 0 0 15px rgba(251, 191, 36, 0.5); }
+      50% { box-shadow: 0 8px 0 #92400e, 0 0 35px rgba(251, 191, 36, 0.9); }
+    }
+
+    /* =========================================================
+       SCREEN 1: WELCOME SCREEN
+       ========================================================= */
+    .welcome-card-wrapper {
+      background: linear-gradient(145deg, #FFF7E6 0%, #FEF3C7 100%);
+      border-radius: var(--border-radius-lg);
+      padding: 2.2rem;
+      border: 6px solid var(--yellow);
+      box-shadow: 0 18px 35px rgba(0, 0, 0, 0.4), inset 0 2px 4px rgba(255, 255, 255, 0.8);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .welcome-header-area {
+      text-align: center;
+      margin-bottom: 1.8rem;
+    }
+
+    .academy-badge-tag {
+      display: inline-block;
+      background: var(--navy);
+      color: var(--yellow);
+      font-weight: 900;
+      font-size: 1rem;
+      padding: 0.35rem 1.4rem;
+      border-radius: 999px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 0.75rem;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+      border: 2px solid var(--yellow);
+    }
+
+    h1.main-title {
+      color: var(--navy);
+      font-size: clamp(2rem, 4.5vw, 3.4rem);
+      font-weight: 900;
+      line-height: 1.15;
+      margin-bottom: 0.5rem;
+      text-shadow: 0 2px 0 rgba(255,255,255,0.8);
+    }
+
+    p.main-subtitle {
+      color: #92400e;
+      font-size: clamp(1.2rem, 2.2vw, 1.7rem);
+      font-weight: 800;
+    }
+
+    .welcome-main-layout {
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      gap: 2rem;
+      align-items: center;
+      margin-top: 1rem;
+    }
+
+    @media (max-width: 950px) {
+      .welcome-main-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .welcome-mascot-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+    }
+
+    /* Speech Bubble from Detective Dot */
+    .speech-bubble {
+      background: #ffffff;
+      border: 3px solid var(--navy);
+      border-radius: 20px;
+      padding: 1.1rem 1.5rem;
+      color: var(--navy);
+      font-size: 1.25rem;
+      font-weight: 700;
+      position: relative;
+      margin-bottom: 1.2rem;
+      max-width: 440px;
+      box-shadow: 0 6px 0 rgba(15, 23, 42, 0.15);
+      text-align: center;
+    }
+
+    .speech-bubble::after {
+      content: '';
+      position: absolute;
+      bottom: -16px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-width: 16px 14px 0;
+      border-style: solid;
+      border-color: #ffffff transparent;
+      display: block;
+      width: 0;
+    }
+
+    .speech-bubble::before {
+      content: '';
+      position: absolute;
+      bottom: -20px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-width: 19px 17px 0;
+      border-style: solid;
+      border-color: var(--navy) transparent;
+      display: block;
+      width: 0;
+    }
+
+    /* Interactive Detective Instructions & Mission Box */
+    .welcome-content-box {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+
+    .mission-banner {
+      background: linear-gradient(135deg, var(--blue), var(--blue-dark));
+      color: #ffffff;
+      padding: 1.1rem 1.4rem;
+      border-radius: var(--border-radius-md);
+      font-size: 1.2rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 0.9rem;
+      box-shadow: 0 6px 0 rgba(30, 58, 138, 0.6);
+      border: 2px solid #93c5fd;
+    }
+
+    .instruction-card {
+      background: #ffffff;
+      border: 3px solid #cbd5e1;
+      border-radius: var(--border-radius-md);
+      padding: 1.2rem 1.4rem;
+      box-shadow: 0 6px 0 rgba(0,0,0,0.06);
+    }
+
+    .instruction-card h3 {
+      color: var(--navy);
+      font-size: 1.2rem;
+      margin-bottom: 0.8rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .instruction-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+
+    .instruction-list li {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text-dark);
+    }
+
+    .step-badge {
+      width: 32px;
+      height: 32px;
+      background: var(--yellow);
+      color: #78350f;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 0.95rem;
+      flex-shrink: 0;
+      border: 2px solid #b45309;
+    }
+
+    .welcome-btn-wrap {
+      margin-top: 0.5rem;
+      display: flex;
+      justify-content: center;
+    }
+
+    /* =========================================================
+       MASCOT: DETECTIVE DOT (SVG Owl)
+       Dynamic states: Neutral, Thinking, Celebrating, Encouraging
+       ========================================================= */
+    .mascot-container {
+      width: 250px;
+      height: 250px;
+      position: relative;
+      cursor: pointer;
+      filter: drop-shadow(0 12px 14px rgba(0,0,0,0.25));
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .mascot-container:hover {
+      transform: scale(1.05) rotate(2deg);
+    }
+
+    .dot-svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    /* Mascot Animation keyframes */
+    .mascot-breathe {
+      animation: dotBreathe 3.5s ease-in-out infinite;
+      transform-origin: bottom center;
+    }
+
+    @keyframes dotBreathe {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.02) translateY(-4px); }
+    }
+
+    .mascot-celebrate-anim {
+      animation: dotHop 0.6s ease-in-out infinite alternate;
+    }
+
+    @keyframes dotHop {
+      0% { transform: translateY(0) rotate(-3deg); }
+      100% { transform: translateY(-16px) rotate(3deg); }
+    }
+
+    /* Eye pupil shifts for states */
+    .dot-state-thinking .dot-pupil {
+      transform: translate(6px, -4px);
+    }
+
+    .dot-state-celebrating .dot-eye-open {
+      display: none;
+    }
+
+    .dot-state-celebrating .dot-eye-happy {
+      display: block !important;
+    }
+
+    /* =========================================================
+       SCREEN 2: MEET THE FIGURES OF SPEECH (LEARNING CARDS)
+       ========================================================= */
+    .learn-screen-header {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .learn-screen-header h2 {
+      color: #ffffff;
+      font-size: clamp(1.8rem, 3.5vw, 2.7rem);
+      font-weight: 900;
+      text-shadow: 0 3px 6px rgba(0,0,0,0.4);
+    }
+
+    .learn-screen-header p {
+      color: var(--yellow-light);
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-top: 0.3rem;
+    }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .figure-card {
+      background: var(--cream);
+      border-radius: var(--border-radius-md);
+      border: 4px solid #ffffff;
+      padding: 1.3rem;
+      box-shadow: 0 10px 0 rgba(0,0,0,0.25);
+      cursor: pointer;
+      transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .figure-card:hover {
+      transform: translateY(-6px) scale(1.02);
+      box-shadow: 0 16px 0 rgba(0,0,0,0.3);
+      border-color: var(--yellow);
+    }
+
+    .figure-card:active {
+      transform: translateY(2px);
+      box-shadow: 0 4px 0 rgba(0,0,0,0.25);
+    }
+
+    .figure-card-top {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      margin-bottom: 0.9rem;
+    }
+
+    .figure-badge-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      border: 2px solid rgba(0,0,0,0.1);
+    }
+
+    .figure-card-title {
+      font-size: 1.45rem;
+      font-weight: 900;
+      color: var(--navy);
+      line-height: 1.1;
+    }
+
+    .figure-card-tag {
+      font-size: 0.85rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #92400e;
+    }
+
+    .figure-illustration-box {
+      width: 100%;
+      height: 130px;
+      background: #ffffff;
+      border-radius: var(--border-radius-sm);
+      margin-bottom: 0.9rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      border: 2px dashed #cbd5e1;
+      position: relative;
+    }
+
+    .figure-illustration-box svg {
+      width: 100%;
+      height: 100%;
+      max-height: 120px;
+    }
+
+    .figure-def {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      line-height: 1.35;
+      margin-bottom: 0.8rem;
+      flex-grow: 1;
+    }
+
+    .figure-example-box {
+      background: #ffffff;
+      border-left: 5px solid var(--blue);
+      padding: 0.6rem 0.8rem;
+      border-radius: 0 8px 8px 0;
+      font-size: 0.95rem;
+      font-style: italic;
+      color: var(--navy);
+      font-weight: 800;
+      margin-bottom: 0.8rem;
+    }
+
+    .card-tap-hint {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 0.4rem;
+      font-size: 0.85rem;
+      font-weight: 900;
+      color: var(--blue);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .card-tap-hint svg {
+      width: 18px;
+      height: 18px;
+      fill: currentColor;
+    }
+
+    .learn-actions-wrap {
+      display: flex;
+      justify-content: center;
+      margin-top: 1rem;
+    }
+
+    /* Figure Colors */
+    .card-simile { background: #eff6ff; border-color: #bfdbfe; }
+    .card-simile .figure-badge-icon { background: #dbeafe; color: #1d4ed8; }
+    .card-simile .figure-example-box { border-left-color: #3b82f6; }
+
+    .card-metaphor { background: #fdf2f8; border-color: #fbcfe8; }
+    .card-metaphor .figure-badge-icon { background: #fce7f3; color: #be185d; }
+    .card-metaphor .figure-example-box { border-left-color: #ec4899; }
+
+    .card-personification { background: #f5f3ff; border-color: #ddd6fe; }
+    .card-personification .figure-badge-icon { background: #ede9fe; color: #6d28d9; }
+    .card-personification .figure-example-box { border-left-color: #8b5cf6; }
+
+    .card-alliteration { background: #ecfdf5; border-color: #a7f3d0; }
+    .card-alliteration .figure-badge-icon { background: #d1fae5; color: #047857; }
+    .card-alliteration .figure-example-box { border-left-color: #10b981; }
+
+    .card-hyperbole { background: #fffbeb; border-color: #fde68a; }
+    .card-hyperbole .figure-badge-icon { background: #fef3c7; color: #b45309; }
+    .card-hyperbole .figure-example-box { border-left-color: #f59e0b; }
+
+    .card-onomatopoeia { background: #fff1f2; border-color: #fecdd3; }
+    .card-onomatopoeia .figure-badge-icon { background: #ffe4e6; color: #e11d48; }
+    .card-onomatopoeia .figure-example-box { border-left-color: #fb7185; }
+
+    /* =========================================================
+       SCREEN 3: THE MYSTERY CASES (GAME MODE)
+       ========================================================= */
+    .case-game-header {
+      background: rgba(15, 23, 42, 0.7);
+      border: 3px solid rgba(251, 191, 36, 0.5);
+      border-radius: var(--border-radius-md);
+      padding: 1rem 1.5rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+    }
+
+    .case-progress-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 0.8rem;
+    }
+
+    .case-number-badge {
+      font-size: 1.3rem;
+      font-weight: 900;
+      color: var(--yellow);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .progress-bar-container {
+      width: 100%;
+      height: 18px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 999px;
+      overflow: hidden;
+      border: 2px solid rgba(255, 255, 255, 0.4);
+      position: relative;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      width: 16.66%;
+      background: linear-gradient(90deg, #34D399, #FBBF24);
+      border-radius: 999px;
+      transition: width 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      box-shadow: 0 0 10px rgba(52, 211, 153, 0.8);
+    }
+
+    /* Mystery Case Folders Status Track (16 Cases in 2 neat rows of 8 on Smart Boards) */
+    .folders-track {
+      display: grid;
+      grid-template-columns: repeat(8, 1fr);
+      gap: 0.45rem;
+      margin-top: 0.8rem;
+    }
+
+    @media (max-width: 1024px) {
+      .folders-track {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+
+    .folder-tab {
+      background: rgba(255, 255, 255, 0.15);
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-radius: 12px;
+      min-height: 65px;
+      padding: 0.5rem 0.2rem;
+      text-align: center;
+      color: #fff;
+      font-size: 0.95rem;
+      font-weight: 800;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.25rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .folder-tab.active {
+      background: var(--yellow);
+      color: #78350f;
+      border-color: #fff;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(251, 191, 36, 0.5);
+    }
+
+    .folder-tab.solved {
+      background: var(--mint);
+      color: #064e3b;
+      border-color: #fff;
+    }
+
+    .folder-tab svg {
+      width: 18px;
+      height: 18px;
+      fill: currentColor;
+    }
+
+    /* Detective Case File Card */
+    .case-card-container {
+      background: linear-gradient(145deg, #ffffff 0%, #fffbeb 100%);
+      border-radius: var(--border-radius-lg);
+      border: 6px solid var(--yellow);
+      box-shadow: 0 16px 30px rgba(0, 0, 0, 0.4);
+      padding: 1.8rem;
+      position: relative;
+      margin-bottom: 1.5rem;
+    }
+
+    .dossier-stamp {
+      position: absolute;
+      top: 15px;
+      right: 25px;
+      border: 3px dashed #ef4444;
+      color: #ef4444;
+      font-weight: 900;
+      font-size: 1.1rem;
+      padding: 0.25rem 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      transform: rotate(6deg);
+      pointer-events: none;
+      border-radius: 6px;
+    }
+
+    .case-question-banner {
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: var(--blue-dark);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 0.8rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .case-sentence-box {
+      background: #ffffff;
+      border: 4px solid var(--navy);
+      border-radius: var(--border-radius-md);
+      padding: 1.4rem 1.8rem;
+      margin-bottom: 1.5rem;
+      position: relative;
+      box-shadow: 0 6px 0 rgba(15, 23, 42, 0.15);
+    }
+
+    .sentence-label {
+      position: absolute;
+      top: -14px;
+      left: 20px;
+      background: var(--navy);
+      color: var(--yellow);
+      font-size: 0.9rem;
+      font-weight: 900;
+      padding: 0.15rem 0.8rem;
+      border-radius: 999px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .case-sentence-text {
+      color: var(--navy);
+      font-size: clamp(1.4rem, 2.8vw, 2.1rem);
+      font-weight: 900;
+      line-height: 1.3;
+      text-align: center;
+    }
+
+    /* Scene Illustration & Detective Dot Side by Side */
+    .case-middle-layout {
+      display: grid;
+      grid-template-columns: 1fr 280px;
+      gap: 1.5rem;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    @media (max-width: 900px) {
+      .case-middle-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .case-scene-box {
+      width: 100%;
+      height: 220px;
+      background: #ffffff;
+      border-radius: var(--border-radius-md);
+      border: 3px solid #e2e8f0;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: inset 0 2px 6px rgba(0,0,0,0.06);
+    }
+
+    .case-scene-box svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .case-dot-reaction-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .dot-bubble-small {
+      background: #ffffff;
+      border: 3px solid var(--navy);
+      border-radius: 16px;
+      padding: 0.75rem 1rem;
+      color: var(--navy);
+      font-size: 1.05rem;
+      font-weight: 800;
+      text-align: center;
+      position: relative;
+      margin-bottom: 0.8rem;
+      box-shadow: 0 4px 0 rgba(0,0,0,0.1);
+      width: 100%;
+    }
+
+    .dot-bubble-small::after {
+      content: '';
+      position: absolute;
+      bottom: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-width: 12px 10px 0;
+      border-style: solid;
+      border-color: #ffffff transparent;
+      display: block;
+      width: 0;
+    }
+
+    .dot-bubble-small::before {
+      content: '';
+      position: absolute;
+      bottom: -15px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-width: 15px 12px 0;
+      border-style: solid;
+      border-color: var(--navy) transparent;
+      display: block;
+      width: 0;
+    }
+
+    /* 4 Large Clickable Answer Option Cards - Minimum 70px height */
+    .case-options-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.2rem;
+      margin-bottom: 1.5rem;
+    }
+
+    @media (max-width: 768px) {
+      .case-options-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .option-card-btn {
+      min-height: 72px;
+      background: #ffffff;
+      border: 4px solid #cbd5e1;
+      border-radius: var(--border-radius-md);
+      padding: 1rem 1.4rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+      transition: all 0.18s cubic-bezier(0.34, 1.56, 0.64, 1);
+      box-shadow: 0 6px 0 #94a3b8;
+      text-align: left;
+      font-family: inherit;
+    }
+
+    .option-card-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 9px 0 #94a3b8;
+      border-color: var(--blue);
+    }
+
+    .option-card-btn:active {
+      transform: translateY(3px);
+      box-shadow: 0 3px 0 #94a3b8;
+    }
+
+    .option-letter {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      background: var(--navy);
+      color: #ffffff;
+      font-size: 1.4rem;
+      font-weight: 900;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      border: 2px solid var(--yellow);
+      transition: background 0.2s;
+    }
+
+    .option-text {
+      color: var(--navy);
+      font-size: clamp(1.25rem, 2.2vw, 1.55rem);
+      font-weight: 900;
+      letter-spacing: 0.3px;
+    }
+
+    /* Option States */
+    .option-card-btn.correct-opt {
+      background: #d1fae5 !important;
+      border-color: #059669 !important;
+      box-shadow: 0 8px 0 #047857 !important;
+      transform: translateY(-2px);
+    }
+    .option-card-btn.correct-opt .option-letter {
+      background: #059669;
+      color: #fff;
+    }
+
+    .option-card-btn.wrong-opt {
+      background: #fee2e2 !important;
+      border-color: #dc2626 !important;
+      box-shadow: 0 6px 0 #b91c1c !important;
+      animation: gentleShake 0.4s ease;
+      opacity: 0.8;
+    }
+    .option-card-btn.wrong-opt .option-letter {
+      background: #dc2626;
+      color: #fff;
+    }
+
+    @keyframes gentleShake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-8px); }
+      40%, 80% { transform: translateX(8px); }
+    }
+
+    /* Feedback & Explanation Panel */
+    .feedback-panel {
+      display: none;
+      margin-top: 1.2rem;
+      border-radius: var(--border-radius-md);
+      padding: 1.3rem 1.6rem;
+      animation: popUp 0.3s ease-out;
+    }
+
+    @keyframes popUp {
+      from { transform: scale(0.96) translateY(8px); opacity: 0; }
+      to { transform: scale(1) translateY(0); opacity: 1; }
+    }
+
+    .feedback-panel.success {
+      display: block;
+      background: #ecfdf5;
+      border: 4px solid #34D399;
+      box-shadow: 0 8px 0 #059669;
+    }
+
+    .feedback-panel.hint {
+      display: block;
+      background: #fffbeb;
+      border: 4px solid #FBBF24;
+      box-shadow: 0 8px 0 #d97706;
+    }
+
+    .feedback-title-row {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 0.6rem;
+    }
+
+    .feedback-title {
+      font-size: 1.35rem;
+      font-weight: 900;
+    }
+
+    .feedback-panel.success .feedback-title {
+      color: #065f46;
+    }
+
+    .feedback-panel.hint .feedback-title {
+      color: #92400e;
+    }
+
+    .feedback-explanation {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--navy);
+      line-height: 1.4;
+      margin-bottom: 1.2rem;
+    }
+
+    .feedback-action-row {
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    /* =========================================================
+       SCREEN 4: DETECTIVE REPORT / RESULTS
+       ========================================================= */
+    .results-card-wrapper {
+      background: linear-gradient(145deg, #FFF7E6 0%, #FEF3C7 100%);
+      border-radius: var(--border-radius-lg);
+      padding: 2.2rem;
+      border: 6px solid var(--yellow);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+      text-align: center;
+      position: relative;
+    }
+
+    .results-celebrate-title {
+      color: var(--navy);
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-weight: 900;
+      margin-bottom: 0.4rem;
+    }
+
+    .results-subtitle {
+      color: #b45309;
+      font-size: 1.3rem;
+      font-weight: 800;
+      margin-bottom: 1.5rem;
+    }
+
+    .trophy-hero-box {
+      width: 200px;
+      height: 200px;
+      margin: 0 auto 1.2rem;
+      filter: drop-shadow(0 12px 20px rgba(251, 191, 36, 0.6));
+      animation: floatTrophy 3s ease-in-out infinite alternate;
+    }
+
+    @keyframes floatTrophy {
+      0% { transform: translateY(0) rotate(-2deg); }
+      100% { transform: translateY(-12px) rotate(2deg); }
+    }
+
+    .trophy-hero-box svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .results-score-display {
+      display: inline-block;
+      background: var(--navy);
+      color: var(--yellow);
+      padding: 0.6rem 2.2rem;
+      border-radius: 999px;
+      font-size: clamp(1.8rem, 3.5vw, 2.5rem);
+      font-weight: 900;
+      letter-spacing: 1px;
+      border: 4px solid var(--yellow);
+      box-shadow: 0 8px 0 rgba(0,0,0,0.3);
+      margin-bottom: 1.2rem;
+    }
+
+    .performance-banner {
+      background: #ffffff;
+      border: 3px solid #cbd5e1;
+      border-radius: var(--border-radius-md);
+      padding: 1rem 1.6rem;
+      max-width: 650px;
+      margin: 0 auto 1.8rem;
+      font-size: 1.35rem;
+      font-weight: 900;
+      color: var(--navy-light);
+      box-shadow: 0 6px 0 rgba(0,0,0,0.06);
+    }
+
+    /* Six Unlocked Mystery Badges */
+    .badges-section-title {
+      color: var(--navy);
+      font-size: 1.3rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 1rem;
+    }
+
+    .badges-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1.2rem;
+      max-width: 1100px;
+      margin: 0 auto 2rem;
+    }
+
+    .detective-badge-card {
+      background: #ffffff;
+      border-radius: var(--border-radius-md);
+      border: 3px solid #cbd5e1;
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.6rem;
+      box-shadow: 0 6px 0 rgba(0,0,0,0.08);
+      transition: transform 0.2s;
+    }
+
+    .detective-badge-card:hover {
+      transform: translateY(-4px) scale(1.03);
+    }
+
+    .badge-icon-wrap {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 0 rgba(0,0,0,0.15);
+      border: 3px solid #ffffff;
+    }
+
+    .badge-icon-wrap svg {
+      width: 44px;
+      height: 44px;
+    }
+
+    .badge-name {
+      font-size: 1.05rem;
+      font-weight: 900;
+      color: var(--navy);
+    }
+
+    .badge-star-row {
+      color: var(--yellow);
+      font-size: 1.1rem;
+    }
+
+    .results-buttons-row {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    /* =========================================================
+       INSPECT CLUE MODAL (From Screen 2)
+       ========================================================= */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(6px);
+      z-index: 1000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+
+    .modal-overlay.open {
+      display: flex;
+      animation: fadeInModal 0.25s ease-out;
+    }
+
+    @keyframes fadeInModal {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .modal-card {
+      background: #ffffff;
+      border-radius: var(--border-radius-lg);
+      border: 6px solid var(--yellow);
+      max-width: 750px;
+      width: 100%;
+      padding: 2rem;
+      position: relative;
+      box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+      animation: scaleModal 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    @keyframes scaleModal {
+      from { transform: scale(0.9); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .modal-close-btn {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      width: 58px;
+      height: 58px;
+      border-radius: 50%;
+      background: #fee2e2;
+      border: 3px solid #dc2626;
+      color: #dc2626;
+      font-size: 1.8rem;
+      font-weight: 900;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 4px 0 #b91c1c;
+      transition: all 0.15s;
+    }
+
+    .modal-close-btn:hover {
+      background: #dc2626;
+      color: #fff;
+      transform: scale(1.08);
+    }
+
+    .modal-hero-row {
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .modal-badge-icon {
+      width: 68px;
+      height: 68px;
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      box-shadow: 0 4px 0 rgba(0,0,0,0.1);
+    }
+
+    .modal-figure-title {
+      font-size: 2.1rem;
+      font-weight: 900;
+      color: var(--navy);
+      line-height: 1.1;
+    }
+
+    .modal-illustration-box {
+      width: 100%;
+      height: 180px;
+      background: var(--cream);
+      border-radius: var(--border-radius-md);
+      margin-bottom: 1.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 3px solid #e2e8f0;
+      overflow: hidden;
+    }
+
+    .modal-illustration-box svg {
+      width: 100%;
+      height: 100%;
+      max-height: 170px;
+    }
+
+    .modal-def-box {
+      background: #f1f5f9;
+      border-radius: var(--border-radius-sm);
+      padding: 1rem 1.2rem;
+      margin-bottom: 1rem;
+      border-left: 6px solid var(--blue);
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: var(--navy);
+      line-height: 1.4;
+    }
+
+    .modal-secret-tip {
+      background: #fef3c7;
+      border: 3px dashed #d97706;
+      border-radius: var(--border-radius-sm);
+      padding: 0.9rem 1.2rem;
+      margin-bottom: 1.2rem;
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: #92400e;
+    }
+
+    .modal-extra-examples {
+      background: #ffffff;
+      border: 2px solid #e2e8f0;
+      border-radius: var(--border-radius-sm);
+      padding: 0.9rem 1.2rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .modal-extra-examples h4 {
+      color: var(--navy);
+      font-size: 1rem;
+      margin-bottom: 0.4rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .modal-extra-examples ul {
+      padding-left: 1.3rem;
+      color: #334155;
+      font-size: 1.05rem;
+      font-weight: 700;
+      line-height: 1.4;
+    }
+
+    /* Teacher Settings Modal */
+    .teacher-setting-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 0;
+      border-bottom: 2px dashed #e2e8f0;
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: var(--navy);
+    }
+
+    /* Confetti Canvas */
+    #confetti-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 9999;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Floating Clue Background Art -->
+  <div class="bg-clues">
+    <div class="floating-doodle" style="top: 8%; left: 5%; animation-duration: 22s;">
+      <svg width="90" height="90" viewBox="0 0 100 100" fill="none" stroke="#FBBF24" stroke-width="8"><circle cx="42" cy="42" r="30"/><line x1="64" y1="64" x2="90" y2="90" stroke-linecap="round"/></svg>
+    </div>
+    <div class="floating-doodle" style="top: 15%; right: 8%; animation-duration: 18s;">
+      <svg width="70" height="70" viewBox="0 0 100 100" fill="#38BDF8"><polygon points="50,5 64,36 98,36 70,57 81,91 50,70 19,91 30,57 2,36 36,36"/></svg>
+    </div>
+    <div class="floating-doodle" style="bottom: 12%; left: 10%; animation-duration: 25s;">
+      <svg width="80" height="80" viewBox="0 0 100 100" fill="none" stroke="#FB7185" stroke-width="8"><path d="M20,30 Q35,10 50,30 T80,30" /><circle cx="35" cy="55" r="10"/><circle cx="65" cy="55" r="10"/></svg>
+    </div>
+    <div class="floating-doodle" style="bottom: 20%; right: 12%; animation-duration: 20s;">
+      <svg width="85" height="85" viewBox="0 0 100 100" fill="none" stroke="#34D399" stroke-width="7"><rect x="15" y="25" width="70" height="50" rx="8"/><path d="M15,30 L50,60 L85,30"/></svg>
+    </div>
+  </div>
+
+  <!-- Top Smart Board Header Bar -->
+  <header class="academy-header">
+    <div class="academy-logo" onclick="game.showScreen('welcome')">
+      <!-- Detective Owl Mini Shield Crest -->
+      <svg viewBox="0 0 100 100">
+        <path d="M50 5 L88 20 C88 65 50 95 50 95 C50 95 12 65 12 20 Z" fill="#FBBF24" stroke="#ffffff" stroke-width="4"/>
+        <circle cx="38" cy="40" r="12" fill="#172554"/>
+        <circle cx="62" cy="40" r="12" fill="#172554"/>
+        <circle cx="38" cy="38" r="4" fill="#ffffff"/>
+        <circle cx="62" cy="38" r="4" fill="#ffffff"/>
+        <polygon points="50,48 44,58 56,58" fill="#EA580C"/>
+        <path d="M28 28 L72 28 L62 18 L38 18 Z" fill="#92400E"/>
+      </svg>
+      <div>
+        <span>DETECTIVE ACADEMY</span>
+      </div>
+    </div>
+
+    <div class="header-center-info">
+      <div class="badge-score-pill">
+        <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+        <span id="header-score-text">0 / 160 PTS</span>
+      </div>
+    </div>
+
+    <div class="header-controls">
+      <!-- Audio Toggle Button -->
+      <button class="ctrl-btn" id="sound-btn" onclick="soundManager.toggle()" title="Toggle Sound (Mute/Unmute)" aria-label="Toggle Sound">
+        <svg id="sound-icon-on" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+        <svg id="sound-icon-off" style="display:none;" viewBox="0 0 24 24"><path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/></svg>
+      </button>
+
+      <!-- Fullscreen Toggle Button -->
+      <button class="ctrl-btn" id="fullscreen-btn" onclick="game.toggleFullscreen()" title="Toggle Fullscreen for Smart Board" aria-label="Toggle Fullscreen">
+        <svg id="fs-icon-enter" viewBox="0 0 24 24"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>
+        <svg id="fs-icon-exit" style="display:none;" viewBox="0 0 24 24"><path d="M5 16h3v3h2v-5H5v2zm3-8H5v2h5V5H8v3zm6 11h2v-3h3v-2h-5v5zm2-11V5h-2v5h5V8h-3z"/></svg>
+      </button>
+
+      <!-- Teacher Controls Gear Button -->
+      <button class="ctrl-btn" id="teacher-btn" onclick="game.openTeacherModal()" title="Teacher Settings & Controls" aria-label="Teacher Settings">
+        <svg viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Game Content Wrapper -->
+  <main class="game-container">
+
+    <!-- =========================================================
+         SCREEN 1: WELCOME SCREEN
+         ========================================================= -->
+    <section id="screen-welcome" class="screen active">
+      <div class="welcome-card-wrapper">
+        <div class="welcome-header-area">
+          <div class="academy-badge-tag">Top Secret Language Case Files</div>
+          <h1 class="main-title">THE FIGURE OF SPEECH<br>DETECTIVE ACADEMY</h1>
+          <p class="main-subtitle">"Can you crack the secret language code?"</p>
+        </div>
+
+        <div class="welcome-main-layout">
+          <!-- Mascot Column -->
+          <div class="welcome-mascot-box">
+            <div class="speech-bubble" id="welcome-dot-bubble">
+              "Hoo-ray! Welcome Cadet! I am <strong>Detective Dot</strong>. Sixteen mysterious language codes have gone missing. Will you help me crack them?"
+            </div>
+
+            <!-- Detective Dot Mascot SVG -->
+            <div class="mascot-container mascot-breathe" onclick="game.interactDot('welcome')">
+              <svg class="dot-svg" viewBox="0 0 200 200" id="svg-mascot-welcome">
+                <!-- Shadow -->
+                <ellipse cx="100" cy="188" rx="65" ry="10" fill="#000000" opacity="0.25"/>
+                <!-- Feet -->
+                <path d="M75,178 L70,188 M80,178 L80,188 M85,178 L90,188" stroke="#EA580C" stroke-width="5" stroke-linecap="round"/>
+                <path d="M115,178 L110,188 M120,178 L120,188 M125,178 L130,188" stroke="#EA580C" stroke-width="5" stroke-linecap="round"/>
+                <!-- Owl Body -->
+                <ellipse cx="100" cy="120" rx="64" ry="68" fill="#D97706"/>
+                <!-- Belly Patch -->
+                <ellipse cx="100" cy="130" rx="44" ry="48" fill="#FEF3C7"/>
+                <!-- Feather Tufts -->
+                <path d="M90,118 Q100,126 110,118" stroke="#F59E0B" stroke-width="3" fill="none" stroke-linecap="round"/>
+                <path d="M85,134 Q100,144 115,134" stroke="#F59E0B" stroke-width="3" fill="none" stroke-linecap="round"/>
+                <path d="M92,150 Q100,158 108,150" stroke="#F59E0B" stroke-width="3" fill="none" stroke-linecap="round"/>
+                <!-- Detective Trenchcoat / Cape -->
+                <path d="M50,115 Q100,130 150,115 L154,162 Q100,176 46,162 Z" fill="#78350F" opacity="0.9"/>
+                <path d="M78,118 L100,145 L122,118" fill="#B45309"/>
+                <!-- Brass Buttons -->
+                <circle cx="100" cy="148" r="4.5" fill="#FBBF24" stroke="#78350F" stroke-width="1.5"/>
+                <circle cx="100" cy="160" r="4.5" fill="#FBBF24" stroke="#78350F" stroke-width="1.5"/>
+                <!-- Owl Eyes Base -->
+                <circle cx="72" cy="85" r="24" fill="#ffffff" stroke="#78350F" stroke-width="3"/>
+                <circle cx="128" cy="85" r="24" fill="#ffffff" stroke="#78350F" stroke-width="3"/>
+                <!-- Golden Iris -->
+                <circle cx="75" cy="85" r="14" fill="#FBBF24"/>
+                <circle cx="125" cy="85" r="14" fill="#FBBF24"/>
+                <!-- Pupils -->
+                <circle class="dot-pupil" cx="76" cy="85" r="8" fill="#172554"/>
+                <circle class="dot-pupil" cx="124" cy="85" r="8" fill="#172554"/>
+                <!-- Eye Sparkles -->
+                <circle cx="73" cy="81" r="3" fill="#ffffff"/>
+                <circle cx="121" cy="81" r="3" fill="#ffffff"/>
+                <!-- Closed/Happy Eyes (Hidden by default) -->
+                <path class="dot-eye-happy" d="M54,88 Q72,70 90,88" stroke="#78350F" stroke-width="5" fill="none" stroke-linecap="round" style="display:none;"/>
+                <path class="dot-eye-happy" d="M110,88 Q128,70 146,88" stroke="#78350F" stroke-width="5" fill="none" stroke-linecap="round" style="display:none;"/>
+                <!-- Beak -->
+                <polygon points="100,92 90,105 110,105" fill="#EA580C"/>
+                <!-- Eyebrows / Ear Tufts -->
+                <path d="M50,65 Q70,68 88,74" stroke="#78350F" stroke-width="4.5" stroke-linecap="round"/>
+                <path d="M150,65 Q130,68 112,74" stroke="#78350F" stroke-width="4.5" stroke-linecap="round"/>
+                <!-- Detective Sherlock Hat -->
+                <ellipse cx="100" cy="62" rx="68" ry="14" fill="#92400E"/>
+                <path d="M52,60 C52,24 148,24 148,60 Z" fill="#B45309"/>
+                <!-- Hat Plaid Details -->
+                <path d="M75,34 L125,58 M125,34 L75,58" stroke="#78350F" stroke-width="2.5" opacity="0.6"/>
+                <!-- Hat Ribbon Tie -->
+                <ellipse cx="100" cy="27" rx="9" ry="6" fill="#EA580C"/>
+                <!-- Left Wing holding Magnifying Glass -->
+                <path d="M42,120 Q20,135 34,160 Q48,155 52,130 Z" fill="#B45309"/>
+                <!-- Magnifying Glass -->
+                <g transform="translate(18, 125) rotate(-25)">
+                  <circle cx="30" cy="30" r="22" fill="#E0F2FE" opacity="0.75" stroke="#FBBF24" stroke-width="5"/>
+                  <line x1="45" y1="45" x2="68" y2="68" stroke="#78350F" stroke-width="7" stroke-linecap="round"/>
+                  <path d="M20,20 A15,15 0 0,1 40,24" stroke="#ffffff" stroke-width="3" fill="none" stroke-linecap="round"/>
+                </g>
+                <!-- Right Wing -->
+                <path d="M158,120 Q180,135 166,160 Q152,155 148,130 Z" fill="#B45309"/>
+              </svg>
+            </div>
+          </div>
+
+          <!-- Mission & Instructions Column -->
+          <div class="welcome-content-box">
+            <div class="mission-banner">
+              <svg width="34" height="34" viewBox="0 0 24 24" fill="#FBBF24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+              <span>Your Mission: Find the hidden figures of speech in everyday sentences!</span>
+            </div>
+
+            <div class="instruction-card">
+              <h3>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="#3B82F6"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+                Detective Field Guide Instructions:
+              </h3>
+              <ul class="instruction-list">
+                <li>
+                  <span class="step-badge">1</span>
+                  <span>Read the mystery sentence carefully on the Smart Board.</span>
+                </li>
+                <li>
+                  <span class="step-badge">2</span>
+                  <span>Look for hidden language clues (like, as, sound words, human actions).</span>
+                </li>
+                <li>
+                  <span class="step-badge">3</span>
+                  <span>Tap the correct figure of speech card to solve the case!</span>
+                </li>
+                <li>
+                  <span class="step-badge">4</span>
+                  <span>Earn 10 Detective Points and unlock official badges!</span>
+                </li>
+              </ul>
+            </div>
+
+            <!-- Big Chunky Start Button -->
+            <div class="welcome-btn-wrap">
+              <button class="btn-chunky btn-gold btn-glow-pulse" onclick="game.startInvestigation()">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                <span>START INVESTIGATION</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- =========================================================
+         SCREEN 2: MEET THE FIGURES OF SPEECH (LEARNING CLUES)
+         ========================================================= -->
+    <section id="screen-learn" class="screen">
+      <div class="learn-screen-header">
+        <h2>Welcome, Detective! First, learn your clues.</h2>
+        <p>Tap any clue card below to inspect secret detective tips & examples!</p>
+      </div>
+
+      <!-- 6 Illustrated Clue Cards Grid -->
+      <div class="cards-grid" id="learning-cards-container">
+        <!-- Rendered dynamically via JS for ultra-clean maintainability -->
+      </div>
+
+      <!-- Action Button to proceed to cases -->
+      <div class="learn-actions-wrap">
+        <button class="btn-chunky btn-mint btn-glow-pulse" onclick="game.goToCases()">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <span>I'M READY TO SOLVE THE MYSTERY!</span>
+        </button>
+      </div>
+    </section>
+
+
+    <!-- =========================================================
+         SCREEN 3: THE MYSTERY CASES (MAIN GAMEPLAY)
+         ========================================================= -->
+    <section id="screen-case" class="screen">
+      <!-- Case Progress & Folders Tracker -->
+      <div class="case-game-header">
+        <div class="case-progress-row">
+          <div class="case-number-badge" id="case-counter-badge">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="#FBBF24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
+            <span id="case-step-label">CASE 1 OF 6</span>
+          </div>
+          <div style="font-weight: 800; color: #FBBF24; font-size: 1.1rem;" id="case-score-indicator">
+            CURRENT SCORE: <span id="current-score-val">0</span> / <span id="max-score-val">160</span> PTS
+          </div>
+        </div>
+
+        <div class="progress-bar-container">
+          <div class="progress-bar-fill" id="case-progress-bar"></div>
+        </div>
+
+        <!-- 6 Mystery Case Folder Indicators -->
+        <div class="folders-track" id="folders-track">
+          <!-- Rendered by JS -->
+        </div>
+      </div>
+
+      <!-- Main Case Dossier Card -->
+      <div class="case-card-container">
+        <div class="dossier-stamp" id="dossier-stamp">CONFIDENTIAL</div>
+
+        <div class="case-question-banner">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="#3B82F6"><circle cx="12" cy="12" r="10" stroke="#3B82F6" stroke-width="2" fill="none"/><text x="12" y="16" text-anchor="middle" font-size="14" font-weight="900" fill="#3B82F6">?</text></svg>
+          <span>Which figure of speech is hiding in this sentence?</span>
+        </div>
+
+        <!-- Big Mystery Sentence Card for Smart Board Readability -->
+        <div class="case-sentence-box">
+          <div class="sentence-label">Mystery Clue Sentence</div>
+          <div class="case-sentence-text" id="case-sentence-text">
+            "The stars danced happily in the night sky."
+          </div>
+        </div>
+
+        <!-- Middle Row: Scene Illustration + Detective Dot Reaction -->
+        <div class="case-middle-layout">
+          <!-- Scene SVG Container -->
+          <div class="case-scene-box" id="case-scene-box">
+            <!-- Dynamic SVG Scene Rendered Here -->
+          </div>
+
+          <!-- Mascot Helper Column -->
+          <div class="case-dot-reaction-box">
+            <div class="dot-bubble-small" id="case-dot-bubble">
+              "Examine the sentence cadet! What is happening here?"
+            </div>
+            <div class="mascot-container" style="width: 170px; height: 170px;" id="case-mascot-wrap" onclick="game.interactCaseDot()" title="Tap Detective Dot for advice!">
+              <!-- Reusable Mascot SVG -->
+            </div>
+          </div>
+        </div>
+
+        <!-- 4 Large Clickable Options (Smart Board Touch Optimized) -->
+        <div class="case-options-grid" id="options-grid">
+          <!-- Rendered dynamically -->
+        </div>
+
+        <!-- Feedback & Educational Explanation Panel -->
+        <div class="feedback-panel" id="feedback-panel">
+          <div class="feedback-title-row">
+            <span id="feedback-icon" style="font-size: 2rem;">🌟</span>
+            <span class="feedback-title" id="feedback-title">CASE SOLVED! YOU ARE A SUPER DETECTIVE!</span>
+          </div>
+          <p class="feedback-explanation" id="feedback-explanation">
+            Excellent detective work! Stars cannot really dance. They are given a human action, so this is personification.
+          </p>
+          <div class="feedback-action-row" id="feedback-action-row">
+            <button class="btn-chunky btn-gold btn-glow-pulse" id="next-case-btn" onclick="game.nextCase()">
+              <span>NEXT CASE</span>
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M5 13h11.86l-5.43 5.43 1.42 1.42L21.14 12l-8.29-8.29-1.42 1.42 5.43 5.43H5v2z"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- =========================================================
+         SCREEN 4: DETECTIVE REPORT / RESULTS
+         ========================================================= -->
+    <section id="screen-results" class="screen">
+      <div class="results-card-wrapper">
+        <h1 class="results-celebrate-title">CONGRATULATIONS, DETECTIVE!</h1>
+        <p class="results-subtitle">"You have cracked all sixteen cases at the Language Detective Academy!"</p>
+
+        <!-- Golden Trophy SVG -->
+        <div class="trophy-hero-box">
+          <svg viewBox="0 0 200 200">
+            <!-- Golden Rays -->
+            <g opacity="0.3">
+              <line x1="100" y1="10" x2="100" y2="190" stroke="#FBBF24" stroke-width="4" stroke-dasharray="6,6"/>
+              <line x1="10" y1="100" x2="190" y2="100" stroke="#FBBF24" stroke-width="4" stroke-dasharray="6,6"/>
+              <line x1="36" y1="36" x2="164" y2="164" stroke="#FBBF24" stroke-width="4" stroke-dasharray="6,6"/>
+              <line x1="164" y1="36" x2="36" y2="164" stroke="#FBBF24" stroke-width="4" stroke-dasharray="6,6"/>
+            </g>
+            <!-- Trophy Cup Base Pedestal -->
+            <rect x="65" y="160" width="70" height="24" rx="6" fill="#78350F" stroke="#451a03" stroke-width="3"/>
+            <rect x="75" y="148" width="50" height="15" rx="3" fill="#B45309"/>
+            <polygon points="90,148 110,148 106,125 94,125" fill="#D97706"/>
+            <!-- Plaque -->
+            <rect x="72" y="166" width="56" height="12" rx="2" fill="#FDE68A"/>
+            <text x="100" y="175" text-anchor="middle" font-size="7" font-weight="900" fill="#78350F">MASTER SLEUTH</text>
+            <!-- Trophy Cup Body -->
+            <path d="M55,35 L145,35 C145,95 125,125 100,125 C75,125 55,95 55,35 Z" fill="url(#trophyGrad)" stroke="#B45309" stroke-width="4"/>
+            <!-- Trophy Handles -->
+            <path d="M55,45 C25,45 25,85 58,95" fill="none" stroke="#FBBF24" stroke-width="9" stroke-linecap="round"/>
+            <path d="M55,45 C25,45 25,85 58,95" fill="none" stroke="#B45309" stroke-width="3" stroke-linecap="round"/>
+            <path d="M145,45 C175,45 175,85 142,95" fill="none" stroke="#FBBF24" stroke-width="9" stroke-linecap="round"/>
+            <path d="M145,45 C175,45 175,85 142,95" fill="none" stroke="#B45309" stroke-width="3" stroke-linecap="round"/>
+            <!-- Star Emblem on Trophy -->
+            <polygon points="100,52 105,68 122,68 108,78 113,95 100,84 87,95 92,78 78,68 95,68" fill="#ffffff" stroke="#92400e" stroke-width="2"/>
+            <!-- Sparkles -->
+            <polygon points="40,25 43,33 51,33 44,38 47,46 40,41 33,46 36,38 29,33 37,33" fill="#FBBF24"/>
+            <polygon points="160,25 163,33 171,33 164,38 167,46 160,41 153,46 156,38 149,33 157,33" fill="#FBBF24"/>
+            <!-- Gradients -->
+            <defs>
+              <linearGradient id="trophyGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#FDE68A"/>
+                <stop offset="45%" stop-color="#FBBF24"/>
+                <stop offset="100%" stop-color="#D97706"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+
+        <!-- Total Score Pill -->
+        <div>
+          <div class="results-score-display">
+            FINAL SCORE: <span id="final-score-val">160</span> / <span id="final-max-score-val">160</span>
+          </div>
+        </div>
+
+        <!-- Performance Evaluation Banner -->
+        <div class="performance-banner" id="performance-banner-text">
+          Outstanding! You are a Master Language Detective!
+        </div>
+
+        <p style="font-size: 1.25rem; font-weight: 800; color: #475569; margin-bottom: 0.8rem;">
+          Today, you discovered six magical figures of speech across 16 mystery cases!
+        </p>
+
+        <!-- Unlocked Detective Badges -->
+        <div class="badges-section-title">Official Academy Badges Earned</div>
+        <div class="badges-grid" id="badges-results-grid">
+          <!-- Rendered via JS -->
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="results-buttons-row">
+          <button class="btn-chunky btn-gold" onclick="game.resetGame()">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z"/></svg>
+            <span>PLAY AGAIN</span>
+          </button>
+
+          <button class="btn-chunky btn-blue" onclick="game.showScreen('learn')">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 4h5v8l-2.5-1.5L6 12V4z"/></svg>
+            <span>REVISIT THE CLUES</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- =========================================================
+       INSPECT CLUE MODAL (FOR SCREEN 2 CLUE INSPECTION)
+       ========================================================= -->
+  <div class="modal-overlay" id="inspect-modal">
+    <div class="modal-card">
+      <button class="modal-close-btn" onclick="game.closeInspectModal()" title="Close Inspect File">&times;</button>
+      
+      <div class="modal-hero-row">
+        <div class="modal-badge-icon" id="modal-icon-wrap">
+          <!-- Icon -->
+        </div>
+        <div>
+          <span class="academy-badge-tag" style="margin-bottom:0.2rem; font-size:0.8rem;">Detective Dossier</span>
+          <h3 class="modal-figure-title" id="modal-title">Simile</h3>
+        </div>
+      </div>
+
+      <div class="modal-illustration-box" id="modal-illustration-wrap">
+        <!-- SVG scene -->
+      </div>
+
+      <div class="modal-def-box" id="modal-def">
+        Definition goes here.
+      </div>
+
+      <div class="modal-secret-tip" id="modal-secret-tip">
+        <strong>🔍 Detective Secret Tip:</strong> How to spot this clue easily!
+      </div>
+
+      <div class="modal-extra-examples">
+        <h4>More Detective Clue Examples:</h4>
+        <ul id="modal-examples-list">
+          <!-- Examples -->
+        </ul>
+      </div>
+
+      <button class="btn-chunky btn-mint" style="width:100%;" onclick="game.closeInspectModal()">
+        GOT IT! BACK TO ACADEMY
+      </button>
+    </div>
+  </div>
+
+
+  <!-- =========================================================
+       TEACHER SETTINGS MODAL
+       ========================================================= -->
+  <div class="modal-overlay" id="teacher-modal">
+    <div class="modal-card" style="max-width: 600px;">
+      <button class="modal-close-btn" onclick="game.closeTeacherModal()">&times;</button>
+      
+      <h2 style="color:var(--navy); font-size:1.8rem; margin-bottom:0.5rem; display:flex; align-items:center; gap:0.6rem;">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="#3B82F6"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+        Teacher & Classroom Controls
+      </h2>
+      <p style="color:var(--text-muted); font-size:1rem; font-weight:700; margin-bottom:1.5rem;">
+        Easily manage the lesson flow on your classroom Smart Board.
+      </p>
+
+      <div class="teacher-setting-item">
+        <span>Sound Effects (Chimes & Fanfares)</span>
+        <button class="btn-chunky btn-blue" style="min-height:48px; padding:0.4rem 1.2rem; font-size:1rem;" onclick="soundManager.toggle(); game.updateTeacherSoundLabel();" id="teacher-sound-btn">
+          SOUND: ON
+        </button>
+      </div>
+
+      <div class="teacher-setting-item" style="flex-direction:column; align-items:flex-start; gap:0.6rem;">
+        <span>Jump Directly to Case File (1–16)</span>
+        <div id="teacher-jump-grid" style="display:flex; flex-wrap:wrap; gap:0.35rem; max-width:480px;">
+          <!-- Populated dynamically via JS for all 16 cases -->
+        </div>
+      </div>
+
+      <div class="teacher-setting-item">
+        <span>Restart Current Case File</span>
+        <button class="btn-chunky btn-gold" style="min-height:48px; padding:0.4rem 1.2rem; font-size:1rem;" onclick="game.restartCurrentCase()">
+          RETRY CASE
+        </button>
+      </div>
+
+      <div class="teacher-setting-item">
+        <span>Reset Entire Game Progress</span>
+        <button class="btn-chunky btn-coral" style="min-height:48px; padding:0.4rem 1.2rem; font-size:1rem;" onclick="game.confirmResetGame()">
+          RESET GAME
+        </button>
+      </div>
+
+      <div style="margin-top: 1.5rem;">
+        <button class="btn-chunky btn-mint" style="width:100%; min-height:55px;" onclick="game.closeTeacherModal()">
+          RESUME LESSON
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Confetti Canvas -->
+  <canvas id="confetti-canvas"></canvas>
+
+
+  <!-- =========================================================
+       JAVASCRIPT GAME ENGINE
+       Structured into:
+       1. Sound Manager (Web Audio API synthesis)
+       2. Confetti Particle System
+       3. Educational Data (Figures of speech & Case questions)
+       4. Detective Dot Mascot Animator
+       5. Game State & Screen Navigation
+       ========================================================= -->
+  <script>
+    /* =========================================================
+       1. SOUND MANAGER (Web Audio API Synthesizer)
+       Zero external audio files required! Works 100% offline.
+       ========================================================= */
+    class SoundManager {
+      constructor() {
+        this.ctx = null;
+        this.muted = false;
+      }
+
+      initCtx() {
+        if (!this.ctx) {
+          const AudioCtx = window.AudioContext || window.webkitAudioContext;
+          if (AudioCtx) {
+            this.ctx = new AudioCtx();
+          }
+        }
+        if (this.ctx && this.ctx.state === 'suspended') {
+          this.ctx.resume();
+        }
+      }
+
+      toggle() {
+        this.muted = !this.muted;
+        const iconOn = document.getElementById('sound-icon-on');
+        const iconOff = document.getElementById('sound-icon-off');
+        if (this.muted) {
+          if (iconOn) iconOn.style.display = 'none';
+          if (iconOff) iconOff.style.display = 'block';
+        } else {
+          if (iconOn) iconOn.style.display = 'block';
+          if (iconOff) iconOff.style.display = 'none';
+          this.playClick();
+        }
+        return !this.muted;
+      }
+
+      playTone(freq, type, duration, startTime = 0, gainLevel = 0.15) {
+        if (this.muted) return;
+        this.initCtx();
+        if (!this.ctx) return;
+
+        try {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+
+          osc.type = type;
+          osc.frequency.setValueAtTime(freq, this.ctx.currentTime + startTime);
+
+          gain.gain.setValueAtTime(gainLevel, this.ctx.currentTime + startTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + startTime + duration);
+
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+
+          osc.start(this.ctx.currentTime + startTime);
+          osc.stop(this.ctx.currentTime + startTime + duration);
+        } catch(e) {
+          // Fallback gracefully if audio blocked
+        }
+      }
+
+      playClick() {
+        this.playTone(850, 'sine', 0.05, 0, 0.1);
+      }
+
+      playPop() {
+        if (this.muted) return;
+        this.initCtx();
+        if (!this.ctx) return;
+        try {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(450, this.ctx.currentTime);
+          osc.frequency.exponentialRampToValueAtTime(950, this.ctx.currentTime + 0.08);
+          gain.gain.setValueAtTime(0.12, this.ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.08);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start();
+          osc.stop(this.ctx.currentTime + 0.08);
+        } catch(e) {}
+      }
+
+      playCorrect() {
+        // Cheerful major chord arpeggio: C5 -> E5 -> G5 -> C6
+        const notes = [523.25, 659.25, 783.99, 1046.50];
+        notes.forEach((freq, idx) => {
+          this.playTone(freq, 'triangle', 0.28, idx * 0.09, 0.18);
+        });
+      }
+
+      playWrong() {
+        // Gentle, soft descending wobble (not harsh or punishing)
+        this.playTone(349.23, 'sine', 0.18, 0, 0.12);
+        this.playTone(293.66, 'sine', 0.25, 0.1, 0.12);
+      }
+
+      playVictoryFanfare() {
+        // Triumphant orchestral brass fanfare
+        const fanfare = [
+          { f: 523.25, t: 0.15, d: 0 },
+          { f: 659.25, t: 0.15, d: 0.14 },
+          { f: 783.99, t: 0.15, d: 0.28 },
+          { f: 1046.5, t: 0.45, d: 0.42 },
+          { f: 880.00, t: 0.18, d: 0.90 },
+          { f: 1046.5, t: 0.70, d: 1.10 }
+        ];
+        fanfare.forEach(item => {
+          this.playTone(item.f, 'triangle', item.t, item.d, 0.22);
+        });
+      }
+    }
+
+    const soundManager = new SoundManager();
+
+
+    /* =========================================================
+       2. CONFETTI PARTICLE SYSTEM
+       Celebration visual effects for solved cases & final screen
+       ========================================================= */
+    class ConfettiEngine {
+      constructor(canvasId) {
+        this.canvas = document.getElementById(canvasId);
+        this.ctx = this.canvas.getContext('2d');
+        this.particles = [];
+        this.animId = null;
+        this.resize();
+        window.addEventListener('resize', () => this.resize());
+      }
+
+      resize() {
+        if (!this.canvas) return;
+        this.canvas.width = window.innerWidth;
+        this.canvas.height = window.innerHeight;
+      }
+
+      burst(count = 70) {
+        const colors = ['#FBBF24', '#FB7185', '#34D399', '#3B82F6', '#C4B5FD', '#F43F5E', '#10B981'];
+        for (let i = 0; i < count; i++) {
+          this.particles.push({
+            x: this.canvas.width / 2 + (Math.random() - 0.5) * 300,
+            y: this.canvas.height * 0.4 + (Math.random() - 0.5) * 100,
+            size: Math.random() * 12 + 6,
+            color: colors[Math.floor(Math.random() * colors.length)],
+            vx: (Math.random() - 0.5) * 16,
+            vy: (Math.random() - 0.75) * 18,
+            rotation: Math.random() * 360,
+            vRot: (Math.random() - 0.5) * 12,
+            opacity: 1,
+            shape: Math.random() > 0.4 ? 'rect' : 'circle'
+          });
+        }
+        if (!this.animId) this.animate();
+      }
+
+      animate() {
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        for (let i = this.particles.length - 1; i >= 0; i--) {
+          const p = this.particles[i];
+          p.x += p.vx;
+          p.y += p.vy;
+          p.vy += 0.42; // Gravity
+          p.vx *= 0.98; // Air drag
+          p.rotation += p.vRot;
+          p.opacity -= 0.012;
+
+          if (p.opacity <= 0 || p.y > this.canvas.height + 50) {
+            this.particles.splice(i, 1);
+            continue;
+          }
+
+          this.ctx.save();
+          this.ctx.globalAlpha = p.opacity;
+          this.ctx.translate(p.x, p.y);
+          this.ctx.rotate((p.rotation * Math.PI) / 180);
+          this.ctx.fillStyle = p.color;
+
+          if (p.shape === 'rect') {
+            this.ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size * 0.65);
+          } else {
+            this.ctx.beginPath();
+            this.ctx.arc(0, 0, p.size / 2, 0, Math.PI * 2);
+            this.ctx.fill();
+          }
+          this.ctx.restore();
+        }
+
+        if (this.particles.length > 0) {
+          this.animId = requestAnimationFrame(() => this.animate());
+        } else {
+          this.animId = null;
+          this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        }
+      }
+    }
+
+    const confettiEngine = new ConfettiEngine('confetti-canvas');
+
+
+    /* =========================================================
+       3. EDUCATIONAL CONTENT DATABASE
+       Figures of Speech definitions, clues, and 6 case questions
+       ========================================================= */
+    const FIGURES_DATA = [
+      {
+        id: 'simile',
+        name: 'Simile',
+        cardClass: 'card-simile',
+        definition: 'Comparing two different things using words such as "like" or "as".',
+        example: 'She is as brave as a lion.',
+        secretTip: 'Look for the two magic glue words: "LIKE" or "AS...AS"! If you see them comparing two items, it is a Simile!',
+        moreExamples: [
+          'He ran as fast as lightning.',
+          'Her smile was like sunshine on a rainy day.'
+        ],
+        badgeColor: '#3B82F6',
+        badgeIcon: '🦁',
+        svgScene: `
+          <svg viewBox="0 0 260 140">
+            <!-- Lion and Brave Child Illustration -->
+            <rect width="260" height="140" fill="#eff6ff" rx="8"/>
+            <!-- Friendly Lion -->
+            <ellipse cx="70" cy="75" rx="35" ry="38" fill="#F59E0B"/>
+            <!-- Lion Mane -->
+            <circle cx="70" cy="70" r="42" fill="none" stroke="#D97706" stroke-width="14" stroke-dasharray="14,10"/>
+            <circle cx="58" cy="65" r="5" fill="#78350F"/>
+            <circle cx="82" cy="65" r="5" fill="#78350F"/>
+            <polygon points="70,72 65,78 75,78" fill="#B45309"/>
+            <path d="M64,84 Q70,90 76,84" stroke="#78350F" stroke-width="3" fill="none"/>
+            <ellipse cx="48" cy="40" rx="8" ry="12" fill="#D97706"/>
+            <ellipse cx="92" cy="40" rx="8" ry="12" fill="#D97706"/>
+            <!-- Confident Child -->
+            <ellipse cx="180" cy="45" rx="20" ry="22" fill="#FED7AA"/>
+            <path d="M162,40 C162,20 198,20 198,40 Z" fill="#92400E"/>
+            <circle cx="173" cy="45" r="3.5" fill="#1E293B"/>
+            <circle cx="187" cy="45" r="3.5" fill="#1E293B"/>
+            <path d="M174,54 Q180,60 186,54" stroke="#EA580C" stroke-width="3" fill="none"/>
+            <!-- Superhero Cape -->
+            <path d="M165,65 L145,115 L180,110 Z" fill="#EF4444"/>
+            <!-- Confident Child Body -->
+            <rect x="168" y="66" width="24" height="42" rx="6" fill="#3B82F6"/>
+            <!-- Muscle Flexing Arm -->
+            <path d="M192,72 L210,65 L205,50" stroke="#FED7AA" stroke-width="9" stroke-linecap="round" fill="none"/>
+            <path d="M168,72 L150,75 L155,90" stroke="#FED7AA" stroke-width="8" stroke-linecap="round" fill="none"/>
+            <!-- Text Badge -->
+            <rect x="95" y="15" width="80" height="24" rx="12" fill="#FBBF24" stroke="#D97706" stroke-width="2"/>
+            <text x="135" y="31" font-size="11" font-weight="900" fill="#78350F" text-anchor="middle">AS BRAVE AS</text>
+          </svg>
+        `
+      },
+      {
+        id: 'metaphor',
+        name: 'Metaphor',
+        cardClass: 'card-metaphor',
+        definition: 'Comparing two things directly without using "like" or "as".',
+        example: 'The classroom is a zoo.',
+        secretTip: 'A Metaphor states that one thing IS another thing directly! It does NOT say "like" or "as".',
+        moreExamples: [
+          'Time is a thief that steals our moments.',
+          'You are my shining superhero.'
+        ],
+        badgeColor: '#EC4899',
+        badgeIcon: '🐒',
+        svgScene: `
+          <svg viewBox="0 0 260 140">
+            <!-- Classroom Zoo Illustration -->
+            <rect width="260" height="140" fill="#fdf2f8" rx="8"/>
+            <!-- Chalkboard -->
+            <rect x="20" y="15" width="120" height="65" rx="6" fill="#065F46" stroke="#B45309" stroke-width="4"/>
+            <text x="80" y="42" font-size="12" font-weight="900" fill="#FEF3C7" text-anchor="middle">CLASSROOM</text>
+            <text x="80" y="60" font-size="11" font-weight="800" fill="#34D399" text-anchor="middle">= A ZOO!</text>
+            <!-- Clock with playful Monkey hanging -->
+            <circle cx="165" cy="28" r="16" fill="#ffffff" stroke="#1E293B" stroke-width="3"/>
+            <!-- Monkey hanging -->
+            <ellipse cx="195" cy="55" rx="18" ry="16" fill="#78350F"/>
+            <circle cx="195" cy="45" r="12" fill="#92400E"/>
+            <circle cx="191" cy="44" r="2.5" fill="#ffffff"/>
+            <circle cx="199" cy="44" r="2.5" fill="#ffffff"/>
+            <path d="M182,35 Q170,20 165,28" stroke="#78350F" stroke-width="5" fill="none" stroke-linecap="round"/>
+            <path d="M210,60 Q225,50 215,75" stroke="#78350F" stroke-width="4" fill="none"/>
+            <!-- Giraffe at School Desk -->
+            <path d="M50,130 L50,90 Q50,70 65,65" stroke="#F59E0B" stroke-width="12" fill="none" stroke-linecap="round"/>
+            <circle cx="68" cy="62" r="10" fill="#F59E0B"/>
+            <circle cx="72" cy="60" r="2.5" fill="#78350F"/>
+            <!-- Desk -->
+            <rect x="30" y="105" width="70" height="30" rx="4" fill="#B45309"/>
+            <rect x="45" y="95" width="30" height="12" rx="2" fill="#3B82F6"/>
+          </svg>
+        `
+      },
+      {
+        id: 'personification',
+        name: 'Personification',
+        cardClass: 'card-personification',
+        definition: 'Giving human qualities or actions to non-human things.',
+        example: 'The stars danced in the sky.',
+        secretTip: 'Ask yourself: "Can a star, tree, or wind really do that human action?" If an object is dancing, whispering, or singing, it is Personification!',
+        moreExamples: [
+          'The angry wind howled throughout the cold night.',
+          'The delicious chocolate cake called my name from the fridge.'
+        ],
+        badgeColor: '#8B5CF6',
+        badgeIcon: '⭐',
+        svgScene: `
+          <svg viewBox="0 0 260 140">
+            <!-- Dancing Stars in Night Sky -->
+            <rect width="260" height="140" fill="#0f172a" rx="8"/>
+            <!-- Crescent Moon with sleepy nightcap -->
+            <path d="M40,25 A25,25 0 0,0 60,65 A30,30 0 1,1 40,25 Z" fill="#FBBF24"/>
+            <!-- Dancing Star 1 -->
+            <g transform="translate(110, 45) rotate(15)">
+              <polygon points="0,-22 6,-7 22,-7 10,4 14,20 0,11 -14,20 -10,4 -22,-7 -6,-7" fill="#FDE68A" stroke="#F59E0B" stroke-width="2"/>
+              <!-- Smiling Face -->
+              <circle cx="-4" cy="-2" r="2" fill="#78350F"/>
+              <circle cx="4" cy="-2" r="2" fill="#78350F"/>
+              <path d="M-4,4 Q0,8 4,4" stroke="#78350F" stroke-width="1.8" fill="none"/>
+              <!-- Dancing Feet -->
+              <ellipse cx="-8" cy="22" rx="5" ry="3" fill="#EF4444"/>
+              <ellipse cx="8" cy="24" rx="5" ry="3" fill="#EF4444"/>
+            </g>
+            <!-- Dancing Star 2 -->
+            <g transform="translate(185, 55) rotate(-20)">
+              <polygon points="0,-26 7,-9 26,-9 12,5 17,24 0,13 -17,24 -12,5 -26,-9 -7,-9" fill="#FBBF24" stroke="#D97706" stroke-width="2"/>
+              <circle cx="-5" cy="-3" r="2.5" fill="#78350F"/>
+              <circle cx="5" cy="-3" r="2.5" fill="#78350F"/>
+              <path d="M-5,5 Q0,10 5,5" stroke="#78350F" stroke-width="2" fill="none"/>
+              <!-- Tap Shoes -->
+              <ellipse cx="-10" cy="27" rx="6" ry="3" fill="#3B82F6"/>
+              <ellipse cx="10" cy="25" rx="6" ry="3" fill="#3B82F6"/>
+            </g>
+            <!-- Musical notes -->
+            <text x="85" y="115" font-size="20" fill="#C4B5FD">♪</text>
+            <text x="145" y="110" font-size="24" fill="#F472B6">♫</text>
+            <text x="220" y="95" font-size="18" fill="#FDE68A">♪</text>
+          </svg>
+        `
+      },
+      {
+        id: 'alliteration',
+        name: 'Alliteration',
+        cardClass: 'card-alliteration',
+        definition: 'Repetition of the same beginning consonant sound in nearby words.',
+        example: 'Peter Piper picked purple peppers.',
+        secretTip: 'Listen to the start of each word! If the same bouncy consonant sound repeats over and over (like P... P... P...), that is Alliteration!',
+        moreExamples: [
+          'Busy buzzing bumblebees baked blueberry pies.',
+          'Silly Sammy snake slithered smoothly south.'
+        ],
+        badgeColor: '#10B981',
+        badgeIcon: '🫑',
+        svgScene: `
+          <svg viewBox="0 0 260 140">
+            <!-- Peter Piper & Purple Peppers -->
+            <rect width="260" height="140" fill="#ecfdf5" rx="8"/>
+            <!-- Peter Piper Character -->
+            <circle cx="80" cy="50" r="22" fill="#FED7AA"/>
+            <!-- Purple Cap -->
+            <path d="M60,45 C60,25 100,25 100,45 Z" fill="#8B5CF6"/>
+            <circle cx="73" cy="50" r="3" fill="#1E293B"/>
+            <circle cx="87" cy="50" r="3" fill="#1E293B"/>
+            <path d="M74,60 Q80,66 86,60" stroke="#78350F" stroke-width="2.5" fill="none"/>
+            <!-- Body -->
+            <rect x="66" y="72" width="28" height="45" rx="5" fill="#34D399"/>
+            <!-- Basket of Purple Peppers -->
+            <ellipse cx="150" cy="95" rx="35" ry="18" fill="#92400E"/>
+            <rect x="120" y="80" width="60" height="20" rx="4" fill="#B45309"/>
+            <!-- Purple Peppers -->
+            <path d="M130,82 C125,65 142,65 138,82 Z" fill="#9333EA"/>
+            <path d="M148,80 C143,62 160,62 156,80 Z" fill="#A855F7"/>
+            <path d="M165,83 C160,67 176,67 172,83 Z" fill="#7E22CE"/>
+            <!-- Floating Glowing Letter P's -->
+            <g transform="translate(195, 30)">
+              <circle cx="0" cy="0" r="14" fill="#C4B5FD" stroke="#7C3AED" stroke-width="2"/>
+              <text x="0" y="6" font-size="16" font-weight="900" fill="#5B21B6" text-anchor="middle">P</text>
+            </g>
+            <g transform="translate(225, 65)">
+              <circle cx="0" cy="0" r="12" fill="#A7F3D0" stroke="#059669" stroke-width="2"/>
+              <text x="0" y="5" font-size="14" font-weight="900" fill="#065F46" text-anchor="middle">P</text>
+            </g>
+          </svg>
+        `
+      },
+      {
+        id: 'hyperbole',
+        name: 'Hyperbole',
+        cardClass: 'card-hyperbole',
+        definition: 'An extreme exaggeration used to make something sound more dramatic.',
+        example: 'I have told you a million times!',
+        secretTip: 'Think: "Is this actually possible in real life, or is it an enormous exaggeration?" A million times? Eating a whole mountain? That is Hyperbole!',
+        moreExamples: [
+          'My school backpack weighs ten tons today!',
+          'I am so tired I could sleep for a whole century.'
+        ],
+        badgeColor: '#F59E0B',
+        badgeIcon: '🍕',
+        svgScene: `
+          <svg viewBox="0 0 260 140">
+            <!-- 1000 Pizzas Tower & Astonished Kid -->
+            <rect width="260" height="140" fill="#fffbeb" rx="8"/>
+            <!-- Giant Leaning Tower of Pizzas -->
+            <g transform="translate(170, 15)">
+              <!-- Pizza 5 (Top) -->
+              <ellipse cx="0" cy="18" rx="28" ry="7" fill="#F59E0B" stroke="#B45309" stroke-width="2"/>
+              <ellipse cx="0" cy="16" rx="25" ry="5" fill="#EF4444"/>
+              <!-- Pizza 4 -->
+              <ellipse cx="-4" cy="38" rx="34" ry="8" fill="#F59E0B" stroke="#B45309" stroke-width="2"/>
+              <ellipse cx="-4" cy="36" rx="30" ry="6" fill="#FBBF24"/>
+              <!-- Pizza 3 -->
+              <ellipse cx="3" cy="60" rx="38" ry="9" fill="#F59E0B" stroke="#B45309" stroke-width="2"/>
+              <ellipse cx="3" cy="57" rx="34" ry="7" fill="#EF4444"/>
+              <!-- Pizza 2 -->
+              <ellipse cx="-2" cy="84" rx="44" ry="10" fill="#F59E0B" stroke="#B45309" stroke-width="2"/>
+              <ellipse cx="-2" cy="80" rx="38" ry="8" fill="#FBBF24"/>
+              <!-- Pizza 1 (Bottom Plate) -->
+              <ellipse cx="0" cy="110" rx="52" ry="12" fill="#E2E8F0" stroke="#94A3B8" stroke-width="3"/>
+              <ellipse cx="0" cy="107" rx="48" ry="10" fill="#F59E0B" stroke="#B45309" stroke-width="2"/>
+            </g>
+            <!-- Astonished Child -->
+            <ellipse cx="60" cy="65" rx="22" ry="24" fill="#FED7AA"/>
+            <!-- Hair -->
+            <path d="M40,55 C40,30 80,30 80,55 Z" fill="#78350F"/>
+            <!-- Big Wide Eyes -->
+            <circle cx="52" cy="60" r="7" fill="#ffffff" stroke="#1E293B" stroke-width="2"/>
+            <circle cx="68" cy="60" r="7" fill="#ffffff" stroke="#1E293B" stroke-width="2"/>
+            <circle cx="52" cy="60" r="3" fill="#1E293B"/>
+            <circle cx="68" cy="60" r="3" fill="#1E293B"/>
+            <!-- Wide Open Mouth -->
+            <ellipse cx="60" cy="76" rx="8" ry="10" fill="#991B1B"/>
+            <!-- Body -->
+            <rect x="46" y="90" width="28" height="40" rx="6" fill="#FB7185"/>
+            <!-- Speech bubble with "1,000 PIZZAS?!" -->
+            <rect x="15" y="12" width="95" height="24" rx="8" fill="#ffffff" stroke="#1E293B" stroke-width="2"/>
+            <text x="62" y="28" font-size="10" font-weight="900" fill="#DC2626" text-anchor="middle">1,000 PIZZAS?!</text>
+          </svg>
+        `
+      },
+      {
+        id: 'onomatopoeia',
+        name: 'Onomatopoeia',
+        cardClass: 'card-onomatopoeia',
+        definition: 'Words that imitate real sounds.',
+        example: 'The bees went buzz, buzz!',
+        secretTip: 'Sound words! Words that sound like what they describe: BUZZ, POP, CRASH, BOOM, WHOOSH, MEOW!',
+        moreExamples: [
+          'The balloon popped with a loud BANG!',
+          'Drip, drop, drip, went the leaky kitchen faucet.'
+        ],
+        badgeColor: '#FB7185',
+        badgeIcon: '🐝',
+        svgScene: `
+          <svg viewBox="0 0 260 140">
+            <!-- Bumblebee & Flowers with Comic BUZZ -->
+            <rect width="260" height="140" fill="#fff1f2" rx="8"/>
+            <!-- Flowers -->
+            <circle cx="45" cy="105" r="16" fill="#FB7185"/>
+            <circle cx="45" cy="105" r="8" fill="#FBBF24"/>
+            <path d="M45,120 L45,140" stroke="#059669" stroke-width="4"/>
+            <circle cx="105" cy="115" r="14" fill="#38BDF8"/>
+            <circle cx="105" cy="115" r="7" fill="#FEF08A"/>
+            <!-- Cute Cartoon Bumblebee -->
+            <g transform="translate(170, 75)">
+              <!-- Wings -->
+              <ellipse cx="-6" cy="-22" rx="14" ry="9" fill="#E0F2FE" opacity="0.85" stroke="#38BDF8" stroke-width="2"/>
+              <ellipse cx="8" cy="-24" rx="14" ry="9" fill="#E0F2FE" opacity="0.85" stroke="#38BDF8" stroke-width="2"/>
+              <!-- Body -->
+              <ellipse cx="0" cy="0" rx="25" ry="18" fill="#FBBF24" stroke="#78350F" stroke-width="2"/>
+              <!-- Black Stripes -->
+              <path d="M-8,-16 L-8,16 M4,-18 L4,18" stroke="#1E293B" stroke-width="6"/>
+              <!-- Smiling Face -->
+              <circle cx="14" cy="-3" r="3" fill="#1E293B"/>
+              <path d="M12,5 Q18,9 22,4" stroke="#1E293B" stroke-width="2" fill="none"/>
+              <!-- Stinger -->
+              <polygon points="-25,0 -32,-3 -32,3" fill="#1E293B"/>
+            </g>
+            <!-- Comic Book "BUZZ! BUZZ!" Burst -->
+            <g transform="translate(140, 28)">
+              <polygon points="0,-16 12,-8 28,-14 22,0 34,12 18,12 12,25 2,14 -12,22 -8,6 -24,2 -10,-8" fill="#FDE047" stroke="#EA580C" stroke-width="2.5"/>
+              <text x="5" y="6" font-size="12" font-weight="900" fill="#9A3412" text-anchor="middle">BUZZ!</text>
+            </g>
+          </svg>
+        `
+      }
+    ];
+
+    /* 6 Specific Mystery Case Questions (Exactly matching instructions) */
+    const CASES_DATA = [
+      {
+        caseNum: 1,
+        sentence: "The stars danced happily in the night sky.",
+        correctAnswer: "Personification",
+        options: ["Simile", "Personification", "Hyperbole", "Alliteration"],
+        explanation: "Excellent detective work! Stars cannot really dance. They are given a human action, so this is personification.",
+        hint: "Ask yourself: Can stars really dance with their own feet? Who usually dances? Giving human actions to objects is personification!",
+        figureId: 'personification',
+        sceneSvg: FIGURES_DATA[2].svgScene
+      },
+      {
+        caseNum: 2,
+        sentence: "My brother is as strong as an elephant.",
+        correctAnswer: "Simile",
+        options: ["Metaphor", "Simile", "Onomatopoeia", "Hyperbole"],
+        explanation: "Great observation! The sentence compares your brother's strength to an elephant using the word 'as'. This is a simile.",
+        hint: "Look closely for the secret clue comparison words: 'as... as'!",
+        figureId: 'simile',
+        sceneSvg: FIGURES_DATA[0].svgScene
+      },
+      {
+        caseNum: 3,
+        sentence: "The classroom was a zoo during lunch break!",
+        correctAnswer: "Metaphor",
+        options: ["Personification", "Simile", "Metaphor", "Alliteration"],
+        explanation: "Brilliant! The classroom is directly compared to a zoo without using 'like' or 'as'. This is a metaphor.",
+        hint: "The sentence says the classroom literally WAS a zoo directly, without using 'like' or 'as'!",
+        figureId: 'metaphor',
+        sceneSvg: FIGURES_DATA[1].svgScene
+      },
+      {
+        caseNum: 4,
+        sentence: "Peter Piper picked purple peppers.",
+        correctAnswer: "Alliteration",
+        options: ["Alliteration", "Hyperbole", "Simile", "Personification"],
+        explanation: "Fantastic! Notice how several words begin with the same 'P' sound. Repetition of beginning sounds is called alliteration.",
+        hint: "Say it out loud! Hear the bouncy repetition of the beginning sound: P... P... P...!",
+        figureId: 'alliteration',
+        sceneSvg: FIGURES_DATA[3].svgScene
+      },
+      {
+        caseNum: 5,
+        sentence: "I am so hungry I could eat a thousand pizzas!",
+        correctAnswer: "Hyperbole",
+        options: ["Simile", "Metaphor", "Hyperbole", "Onomatopoeia"],
+        explanation: "Wonderful! Nobody can realistically eat a thousand pizzas. This is an exaggeration used for effect, so it is hyperbole.",
+        hint: "Could anyone really eat 1,000 pizzas in one meal, or is this an extreme dramatic exaggeration?",
+        figureId: 'hyperbole',
+        sceneSvg: FIGURES_DATA[4].svgScene
+      },
+      {
+        caseNum: 6,
+        sentence: "The bees went BUZZ! BUZZ! around the flowers.",
+        correctAnswer: "Onomatopoeia",
+        options: ["Metaphor", "Alliteration", "Personification", "Onomatopoeia"],
+        explanation: "Case solved! The word BUZZ imitates the actual sound made by bees. Words that imitate sounds are examples of onomatopoeia.",
+        hint: "Listen to the word BUZZ! It imitates the real sound the insect makes when flying!",
+        figureId: 'onomatopoeia',
+        sceneSvg: FIGURES_DATA[5].svgScene
+      },
+      {
+        caseNum: 7,
+        sentence: "The wind whispered softly through the trees.",
+        correctAnswer: "Personification",
+        options: ["Simile", "Personification", "Metaphor", "Hyperbole"],
+        explanation: "Wind cannot actually whisper like a human. It is given a human action, so this is personification.",
+        hint: "Can the wind really whisper with a mouth and voice like a person? Giving human actions to the wind is Personification!",
+        figureId: 'personification',
+        sceneSvg: `
+          <svg viewBox="0 0 260 140">
+            <rect width="260" height="140" fill="#ecfeff" rx="8"/>
+            <path d="M60,140 Q55,100 45,70 Q35,50 30,40" stroke="#78350F" stroke-width="10" stroke-linecap="round" fill="none"/>
+            <ellipse cx="45" cy="40" rx="32" ry="24" fill="#22C55E"/>
+            <ellipse cx="60" cy="35" rx="26" ry="20" fill="#16A34A"/>
+            <path d="M110,140 Q105,105 100,75 Q95,60 90,50" stroke="#78350F" stroke-width="8" stroke-linecap="round" fill="none"/>
+            <ellipse cx="105" cy="50" rx="28" ry="20" fill="#34D399"/>
+            <g transform="translate(180, 50)">
+              <path d="M-40,0 C-40,-25 15,-25 15,0 C15,25 -40,25 -40,0 Z" fill="#E0F2FE" stroke="#38BDF8" stroke-width="2.5"/>
+              <circle cx="-18" cy="-5" r="3.5" fill="#0369A1"/>
+              <circle cx="-2" cy="-5" r="3.5" fill="#0369A1"/>
+              <ellipse cx="-26" cy="2" rx="4" ry="2" fill="#F472B6" opacity="0.6"/>
+              <ellipse cx="6" cy="2" rx="4" ry="2" fill="#F472B6" opacity="0.6"/>
+              <ellipse cx="-10" cy="5" rx="3" ry="4" fill="#0284C7"/>
+              <path d="M-45,5 Q-70,-10 -95,5 Q-115,15 -135,0" stroke="#38BDF8" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="8,4" fill="none"/>
+              <path d="M-40,15 Q-65,25 -90,15 Q-110,5 -125,18" stroke="#60A5FA" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+            </g>
+            <rect x="135" y="98" width="115" height="26" rx="8" fill="#ffffff" stroke="#0284C7" stroke-width="2"/>
+            <text x="192" y="115" font-size="11" font-weight="900" fill="#0369A1" text-anchor="middle">"Psst... whispers!"</text>
+          </svg>
+        `
+      },
+      {
+        caseNum: 8,
+        sentence: "My grandmother has a heart of gold.",
+        correctAnswer: "Metaphor",
+        options: ["Alliteration", "Simile", "Metaphor", "Onomatopoeia"],
+        explanation: "Her heart is directly compared to gold to show that she is kind and loving. This is a metaphor.",
+        hint: "The sentence states her heart IS made of gold directly, without using 'like' or 'as'. This direct comparison is a Metaphor!",
+        figureId: 'metaphor',
+        sceneSvg: `
+          <svg viewBox="0 0 260 140">
+            <rect width="260" height="140" fill="#fdf4ff" rx="8"/>
+            <circle cx="130" cy="70" r="55" fill="#FEF3C7" opacity="0.6"/>
+            <path d="M130,115 C70,75 50,45 80,25 C105,10 125,35 130,45 C135,35 155,10 180,25 C210,45 190,75 130,115 Z" fill="url(#goldHeartGradCase8)" stroke="#B45309" stroke-width="3.5"/>
+            <path d="M85,32 C95,22 110,25 120,38" stroke="#ffffff" stroke-width="4" stroke-linecap="round" fill="none"/>
+            <circle cx="100" cy="50" r="3" fill="#ffffff"/>
+            <polygon points="50,45 53,52 60,52 54,56 56,63 50,59 44,63 46,56 40,52 47,52" fill="#FBBF24"/>
+            <polygon points="210,40 213,47 220,47 214,51 216,58 210,54 204,58 206,51 200,47 207,47" fill="#FBBF24"/>
+            <polygon points="130,10 132,16 138,16 133,19 135,25 130,22 125,25 127,19 122,16 128,16" fill="#F59E0B"/>
+            <g transform="translate(130, 72)">
+              <circle cx="-14" cy="0" r="10" fill="#ffffff" opacity="0.85" stroke="#78350F" stroke-width="2.5"/>
+              <circle cx="14" cy="0" r="10" fill="#ffffff" opacity="0.85" stroke="#78350F" stroke-width="2.5"/>
+              <path d="M-4,0 L4,0" stroke="#78350F" stroke-width="2.5"/>
+            </g>
+            <defs>
+              <linearGradient id="goldHeartGradCase8" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#FDE68A"/>
+                <stop offset="50%" stop-color="#FBBF24"/>
+                <stop offset="100%" stop-color="#D97706"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        `
+      },
+      {
+        caseNum: 9,
+        sentence: "My mother is as busy as a bee.",
+        correctAnswer: "Simile",
+        options: ["Personification", "Hyperbole", "Simile", "Metaphor"],
+        explanation: "The mother is compared to a bee using the word \"as\". This is a simile.",
+        hint: "Notice the comparison words: 'as busy as a bee'! Comparing using 'as' is a Simile!",
+        figureId: 'simile',
+        sceneSvg: `
+          <svg viewBox="0 0 260 140">
+            <rect width="260" height="140" fill="#fefce8" rx="8"/>
+            <circle cx="35" cy="115" r="14" fill="#FB7185"/>
+            <circle cx="35" cy="115" r="6" fill="#FDE047"/>
+            <path d="M35,128 L35,140" stroke="#16A34A" stroke-width="3"/>
+            <circle cx="75" cy="120" r="12" fill="#C084FC"/>
+            <circle cx="75" cy="120" r="5" fill="#FEF08A"/>
+            <g transform="translate(150, 70)">
+              <ellipse cx="-8" cy="-24" rx="16" ry="10" fill="#E0F2FE" opacity="0.8" stroke="#38BDF8" stroke-width="2"/>
+              <ellipse cx="10" cy="-26" rx="16" ry="10" fill="#E0F2FE" opacity="0.8" stroke="#38BDF8" stroke-width="2"/>
+              <ellipse cx="0" cy="0" rx="26" ry="19" fill="#FBBF24" stroke="#78350F" stroke-width="2.5"/>
+              <path d="M-8,-17 L-8,17 M5,-19 L5,19" stroke="#1E293B" stroke-width="6"/>
+              <circle cx="16" cy="-4" r="3" fill="#1E293B"/>
+              <path d="M14,4 Q20,8 24,3" stroke="#1E293B" stroke-width="2" fill="none"/>
+              <path d="M22,-14 C22,-14 26,-10 24,-7 C22,-5 19,-7 19,-10 Z" fill="#38BDF8"/>
+              <path d="M12,-18 Q16,-26 22,-26" stroke="#78350F" stroke-width="2" fill="none"/>
+              <circle cx="22" cy="-26" r="2.5" fill="#EA580C"/>
+              <rect x="-38" y="2" width="20" height="15" rx="3" fill="#78350F" stroke="#451a03" stroke-width="1.5"/>
+              <path d="M-32,2 L-32,-2 L-24,-2 L-24,2" stroke="#78350F" stroke-width="2" fill="none"/>
+              <circle cx="35" cy="5" r="7" fill="#F43F5E"/>
+              <circle cx="35" cy="5" r="3" fill="#FEF08A"/>
+              <ellipse cx="-12" cy="22" rx="7" ry="4" fill="#EF4444"/>
+              <ellipse cx="14" cy="20" rx="7" ry="4" fill="#EF4444"/>
+            </g>
+            <line x1="60" y1="65" x2="105" y2="65" stroke="#F59E0B" stroke-width="2.5" stroke-linecap="round"/>
+            <line x1="75" y1="75" x2="110" y2="75" stroke="#F59E0B" stroke-width="2.5" stroke-linecap="round"/>
+            <line x1="85" y1="85" x2="115" y2="85" stroke="#F59E0B" stroke-width="2.5" stroke-linecap="round"/>
+          </svg>
+        `
+      },
+      {
+        caseNum: 10,
+        sentence: "The sleepy moon hid behind the clouds.",
+        correctAnswer: "Personification",
+        options: ["Metaphor", "Alliteration", "Personification", "Simile"],
+        explanation: "The moon is described as sleepy and hiding, which are human-like qualities and actions. This is personification.",
+        hint: "Can the moon really feel sleepy, put on pajamas, and choose to hide? Giving human feelings and actions to the moon is Personification!",
+        figureId: 'personification',
+        sceneSvg: `
+          <svg viewBox="0 0 260 140">
+            <rect width="260" height="140" fill="#1e1b4b" rx="8"/>
+            <circle cx="35" cy="25" r="2" fill="#FEF08A"/>
+            <circle cx="70" cy="15" r="3" fill="#FEF08A"/>
+            <circle cx="230" cy="30" r="2.5" fill="#FEF08A"/>
+            <circle cx="210" cy="80" r="2" fill="#FEF08A"/>
+            <g transform="translate(110, 45)">
+              <path d="M0,-25 A32,32 0 0,0 25,28 A38,38 0 1,1 0,-25 Z" fill="#FBBF24" stroke="#D97706" stroke-width="2.5"/>
+              <path d="M8,-2 Q14,-8 20,-2" stroke="#78350F" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+              <path d="M10,8 Q15,14 20,8" stroke="#78350F" stroke-width="2" fill="none"/>
+              <ellipse cx="6" cy="3" rx="4" ry="2" fill="#FB7185" opacity="0.6"/>
+              <path d="M-6,-22 Q12,-40 30,-32 L15,-18 Z" fill="#3B82F6"/>
+              <circle cx="32" cy="-33" r="5" fill="#ffffff"/>
+            </g>
+            <g transform="translate(130, 95)">
+              <ellipse cx="-45" cy="5" rx="35" ry="22" fill="#4338CA" opacity="0.85"/>
+              <ellipse cx="0" cy="-8" rx="45" ry="26" fill="#6366F1" opacity="0.9"/>
+              <ellipse cx="40" cy="5" rx="35" ry="22" fill="#818CF8" opacity="0.85"/>
+            </g>
+            <text x="175" y="32" font-size="16" font-weight="900" fill="#C4B5FD">Z</text>
+            <text x="190" y="22" font-size="20" font-weight="900" fill="#A78BFA">z</text>
+            <text x="205" y="14" font-size="24" font-weight="900" fill="#DDD6FE">z</text>
+          </svg>
+        `
+      },
+      {
+        caseNum: 11,
+        sentence: "BOOM! The thunder shook the windows.",
+        correctAnswer: "Onomatopoeia",
+        options: ["Hyperbole", "Onomatopoeia", "Metaphor", "Alliteration"],
+        explanation: "The word \"BOOM\" imitates a loud sound. Words that imitate sounds are called onomatopoeia.",
+        hint: "Listen to the word 'BOOM'! It imitates the loud exploding sound made by thunder!",
+        figureId: 'onomatopoeia',
+        sceneSvg: `
+          <svg viewBox="0 0 260 140">
+            <rect width="260" height="140" fill="#334155" rx="8"/>
+            <ellipse cx="70" cy="40" rx="45" ry="25" fill="#475569"/>
+            <ellipse cx="110" cy="35" rx="40" ry="28" fill="#1E293B"/>
+            <ellipse cx="150" cy="45" rx="45" ry="24" fill="#334155"/>
+            <polygon points="105,52 85,82 102,82 80,122 120,75 102,75" fill="#FDE047" stroke="#CA8A04" stroke-width="2.5"/>
+            <g transform="translate(30, 75) rotate(-3)">
+              <rect x="0" y="0" width="45" height="50" rx="4" fill="#E2E8F0" stroke="#0F172A" stroke-width="3"/>
+              <line x1="22" y1="0" x2="22" y2="50" stroke="#0F172A" stroke-width="2"/>
+              <line x1="0" y1="25" x2="45" y2="25" stroke="#0F172A" stroke-width="2"/>
+              <path d="M-6,10 Q-10,25 -6,40" stroke="#FBBF24" stroke-width="3" fill="none"/>
+              <path d="M51,10 Q55,25 51,40" stroke="#FBBF24" stroke-width="3" fill="none"/>
+            </g>
+            <g transform="translate(185, 75)">
+              <polygon points="0,-40 18,-20 42,-32 30,-5 52,14 26,16 20,42 0,22 -20,40 -16,14 -42,10 -24,-8 -36,-32 -10,-20" fill="#EF4444" stroke="#B91C1C" stroke-width="3"/>
+              <polygon points="0,-32 14,-16 34,-24 24,-4 42,10 20,12 16,32 0,16 -16,30 -12,10 -32,8 -18,-6 -28,-24 -8,-16" fill="#FBBF24"/>
+              <text x="0" y="8" font-size="22" font-weight="900" fill="#7F1D1D" text-anchor="middle" font-family="Impact, sans-serif" letter-spacing="1">BOOM!</text>
+            </g>
+          </svg>
+        `
+      },
+      {
+        caseNum: 12,
+        sentence: "I have a mountain of homework to finish!",
+        correctAnswer: "Hyperbole",
+        options: ["Simile", "Personification", "Hyperbole", "Metaphor"],
+        explanation: "The student does not actually have a mountain of homework. It is an exaggeration to show that there is a lot of work.",
+        hint: "Can school homework really pile up into an actual giant rocky mountain? This massive exaggeration is Hyperbole!",
+        figureId: 'hyperbole',
+        sceneSvg: `
+          <svg viewBox="0 0 260 140">
+            <rect width="260" height="140" fill="#fff7ed" rx="8"/>
+            <g transform="translate(160, 15)">
+              <rect x="-65" y="100" width="130" height="20" rx="3" fill="#DC2626" stroke="#991B1B" stroke-width="2"/>
+              <rect x="-60" y="82" width="120" height="18" rx="3" fill="#2563EB" stroke="#1D4ED8" stroke-width="2"/>
+              <rect x="-50" y="66" width="100" height="16" rx="3" fill="#16A34A" stroke="#15803D" stroke-width="2"/>
+              <rect x="-42" y="52" width="84" height="14" rx="3" fill="#F59E0B" stroke="#D97706" stroke-width="2"/>
+              <rect x="-35" y="40" width="70" height="12" rx="3" fill="#9333EA" stroke="#7E22CE" stroke-width="2"/>
+              <rect x="-25" y="30" width="50" height="10" rx="2" fill="#EC4899" stroke="#DB2777" stroke-width="2"/>
+              <line x1="0" y1="30" x2="0" y2="8" stroke="#1E293B" stroke-width="2.5"/>
+              <polygon points="0,8 24,14 0,20" fill="#EF4444"/>
+              <rect x="-55" y="45" width="12" height="16" rx="1" fill="#ffffff" stroke="#94A3B8" stroke-width="1" transform="rotate(15)"/>
+              <rect x="35" y="75" width="14" height="18" rx="1" fill="#ffffff" stroke="#94A3B8" stroke-width="1" transform="rotate(-20)"/>
+            </g>
+            <g transform="translate(45, 60)">
+              <circle cx="15" cy="18" r="18" fill="#FED7AA"/>
+              <path d="M-2,12 C-2,-5 32,-5 32,12 Z" fill="#92400E"/>
+              <circle cx="10" cy="14" r="5" fill="#ffffff" stroke="#1E293B" stroke-width="1.5"/>
+              <circle cx="22" cy="14" r="5" fill="#ffffff" stroke="#1E293B" stroke-width="1.5"/>
+              <circle cx="12" cy="11" r="2.5" fill="#1E293B"/>
+              <circle cx="24" cy="11" r="2.5" fill="#1E293B"/>
+              <ellipse cx="16" cy="26" rx="5" ry="6" fill="#7F1D1D"/>
+              <rect x="2" y="38" width="26" height="38" rx="5" fill="#3B82F6"/>
+              <line x1="28" y1="50" x2="42" y2="35" stroke="#FBBF24" stroke-width="4" stroke-linecap="round"/>
+              <polygon points="42,35 46,31 40,33" fill="#EA580C"/>
+            </g>
+            <rect x="15" y="10" width="85" height="22" rx="6" fill="#FEE2E2" stroke="#EF4444" stroke-width="1.5"/>
+            <text x="57" y="25" font-size="10" font-weight="900" fill="#B91C1C" text-anchor="middle">A MOUNTAIN?!</text>
+          </svg>
+        `
+      },
+      {
+        caseNum: 13,
+        sentence: "Clever cats catch colourful butterflies.",
+        correctAnswer: "Alliteration",
+        options: ["Alliteration", "Simile", "Metaphor", "Hyperbole"],
+        explanation: "The 'C' sound is repeated at the beginning of several nearby words. This is alliteration.",
+        hint: "Say it out loud: Clever Cats Catch Colourful...! Notice the repeating 'C' sound at the beginning of each word!",
+        figureId: 'alliteration',
+        sceneSvg: `
+          <svg viewBox="0 0 260 140">
+            <rect width="260" height="140" fill="#f0fdf4" rx="8"/>
+            <path d="M0,125 Q65,115 130,125 T260,125 L260,140 L0,140 Z" fill="#BBF7D0"/>
+            <g transform="translate(75, 75)">
+              <ellipse cx="0" cy="20" rx="28" ry="24" fill="#F97316"/>
+              <circle cx="0" cy="-6" r="24" fill="#FB923C"/>
+              <polygon points="-20,-16 -12,-36 0,-24" fill="#F97316"/>
+              <polygon points="-16,-18 -12,-30 -2,-24" fill="#FED7AA"/>
+              <polygon points="20,-16 12,-36 0,-24" fill="#F97316"/>
+              <polygon points="16,-18 12,-30 2,-24" fill="#FED7AA"/>
+              <ellipse cx="-8" cy="-8" rx="5" ry="7" fill="#15803D"/>
+              <ellipse cx="8" cy="-8" rx="5" ry="7" fill="#15803D"/>
+              <circle cx="-7" cy="-10" r="2" fill="#ffffff"/>
+              <circle cx="9" cy="-10" r="2" fill="#ffffff"/>
+              <polygon points="0,-1 -3,-4 3,-4" fill="#F43F5E"/>
+              <path d="M-4,3 Q0,6 4,3" stroke="#7C2D12" stroke-width="2" fill="none"/>
+              <line x1="-15" y1="-2" x2="-30" y2="-6" stroke="#7C2D12" stroke-width="1.5"/>
+              <line x1="-15" y1="2" x2="-30" y2="4" stroke="#7C2D12" stroke-width="1.5"/>
+              <line x1="15" y1="-2" x2="30" y2="-6" stroke="#7C2D12" stroke-width="1.5"/>
+              <line x1="15" y1="2" x2="30" y2="4" stroke="#7C2D12" stroke-width="1.5"/>
+              <ellipse cx="-16" cy="-2" rx="6" ry="10" fill="#FB923C" transform="rotate(-20)"/>
+              <ellipse cx="20" cy="-6" rx="6" ry="10" fill="#FB923C" transform="rotate(30)"/>
+            </g>
+            <g transform="translate(170, 45) rotate(-15)">
+              <ellipse cx="-8" cy="-6" rx="9" ry="12" fill="#EC4899"/>
+              <ellipse cx="8" cy="-6" rx="9" ry="12" fill="#EC4899"/>
+              <ellipse cx="-6" cy="6" rx="6" ry="8" fill="#F472B6"/>
+              <ellipse cx="6" cy="6" rx="6" ry="8" fill="#F472B6"/>
+              <ellipse cx="0" cy="0" rx="3" ry="14" fill="#1E293B"/>
+            </g>
+            <g transform="translate(225, 75) rotate(20)">
+              <ellipse cx="-8" cy="-6" rx="9" ry="12" fill="#3B82F6"/>
+              <ellipse cx="8" cy="-6" rx="9" ry="12" fill="#3B82F6"/>
+              <ellipse cx="-6" cy="6" rx="6" ry="8" fill="#60A5FA"/>
+              <ellipse cx="6" cy="6" rx="6" ry="8" fill="#60A5FA"/>
+              <ellipse cx="0" cy="0" rx="3" ry="14" fill="#1E293B"/>
+            </g>
+            <g transform="translate(145, 100)">
+              <circle cx="0" cy="0" r="14" fill="#FEF08A" stroke="#EAB308" stroke-width="2"/>
+              <text x="0" y="6" font-size="16" font-weight="900" fill="#A16207" text-anchor="middle">C</text>
+            </g>
+            <g transform="translate(210, 25)">
+              <circle cx="0" cy="0" r="14" fill="#BBF7D0" stroke="#22C55E" stroke-width="2"/>
+              <text x="0" y="6" font-size="16" font-weight="900" fill="#15803D" text-anchor="middle">C</text>
+            </g>
+          </svg>
+        `
+      },
+      {
+        caseNum: 14,
+        sentence: "She cried a river of tears after losing her toy.",
+        correctAnswer: "Hyperbole",
+        options: ["Metaphor", "Hyperbole", "Personification", "Onomatopoeia"],
+        explanation: "She did not literally cry enough tears to make a river. This is an exaggeration called hyperbole.",
+        hint: "Could anyone cry enough tears to fill an entire real river with boats? This dramatic extreme exaggeration is Hyperbole!",
+        figureId: 'hyperbole',
+        sceneSvg: `
+          <svg viewBox="0 0 260 140">
+            <rect width="260" height="140" fill="#eff6ff" rx="8"/>
+            <g transform="translate(70, 48)">
+              <circle cx="0" cy="0" r="22" fill="#FED7AA"/>
+              <path d="M-18,-8 C-35,-15 -35,15 -20,10 Z" fill="#92400E"/>
+              <path d="M18,-8 C35,-15 35,15 20,10 Z" fill="#92400E"/>
+              <path d="M-18,-15 C-18,-30 18,-30 18,-15 Z" fill="#B45309"/>
+              <path d="M-12,-4 L-4,-4 M-12,-4 L-8,-8 M-12,-4 L-8,0" stroke="#78350F" stroke-width="2.5" stroke-linecap="round"/>
+              <path d="M12,-4 L4,-4 M12,-4 L8,-8 M12,-4 L8,0" stroke="#78350F" stroke-width="2.5" stroke-linecap="round"/>
+              <ellipse cx="0" cy="8" rx="7" ry="9" fill="#991B1B"/>
+              <path d="M-10,-4 Q-35,-25 -30,20 Q-25,50 15,65" stroke="#38BDF8" stroke-width="7" fill="none" stroke-linecap="round"/>
+              <path d="M10,-4 Q35,-25 30,20 Q25,50 -15,65" stroke="#38BDF8" stroke-width="7" fill="none" stroke-linecap="round"/>
+            </g>
+            <path d="M0,105 Q60,95 120,115 T260,105 L260,140 L0,140 Z" fill="#38BDF8" stroke="#0284C7" stroke-width="2"/>
+            <path d="M0,120 Q60,110 130,125 T260,120" stroke="#BAE6FD" stroke-width="2" fill="none"/>
+            <g transform="translate(185, 105)">
+              <polygon points="0,0 26,0 20,12 6,12" fill="#ffffff" stroke="#0284C7" stroke-width="1.5"/>
+              <polygon points="13,-14 24,0 13,0" fill="#EF4444"/>
+              <polygon points="13,-14 3,0 13,0" fill="#FBBF24"/>
+            </g>
+            <rect x="145" y="18" width="105" height="24" rx="6" fill="#ffffff" stroke="#0284C7" stroke-width="2"/>
+            <text x="197" y="34" font-size="10" font-weight="900" fill="#0369A1" text-anchor="middle">RIVER OF TEARS!</text>
+          </svg>
+        `
+      },
+      {
+        caseNum: 15,
+        sentence: "The classroom was a beehive of activity.",
+        correctAnswer: "Metaphor",
+        options: ["Simile", "Alliteration", "Metaphor", "Personification"],
+        explanation: "The classroom is directly compared to a beehive to show that everyone is busy and active. This is a metaphor.",
+        hint: "Is the classroom literally made of beeswax and honeycombs, or is it directly compared to a beehive without 'like' or 'as'?",
+        figureId: 'metaphor',
+        sceneSvg: `
+          <svg viewBox="0 0 260 140">
+            <rect width="260" height="140" fill="#fffbeb" rx="8"/>
+            <g opacity="0.3" stroke="#F59E0B" stroke-width="2" fill="none">
+              <polygon points="30,20 45,12 60,20 60,38 45,46 30,38"/>
+              <polygon points="60,38 75,30 90,38 90,56 75,64 60,56"/>
+              <polygon points="90,20 105,12 120,20 120,38 105,46 90,38"/>
+              <polygon points="180,20 195,12 210,20 210,38 195,46 180,38"/>
+              <polygon points="210,38 225,30 240,38 240,56 225,64 210,56"/>
+            </g>
+            <path d="M70,130 C60,60 200,60 190,130 Z" fill="#FDE047" stroke="#D97706" stroke-width="4"/>
+            <ellipse cx="130" cy="115" rx="25" ry="18" fill="#78350F"/>
+            <g transform="translate(85, 75)">
+              <ellipse cx="-6" cy="-14" rx="8" ry="6" fill="#E0F2FE" stroke="#38BDF8" stroke-width="1.5"/>
+              <circle cx="0" cy="0" r="12" fill="#FED7AA"/>
+              <path d="M-6,-10 L-10,-18 M6,-10 L10,-18" stroke="#1E293B" stroke-width="2"/>
+              <circle cx="-10" cy="-18" r="2.5" fill="#F59E0B"/>
+              <circle cx="10" cy="-18" r="2.5" fill="#F59E0B"/>
+              <rect x="-8" y="12" width="16" height="18" rx="3" fill="#3B82F6"/>
+              <rect x="-14" y="16" width="12" height="10" rx="1" fill="#EF4444"/>
+            </g>
+            <g transform="translate(175, 75)">
+              <ellipse cx="6" cy="-14" rx="8" ry="6" fill="#E0F2FE" stroke="#38BDF8" stroke-width="1.5"/>
+              <circle cx="0" cy="0" r="12" fill="#FED7AA"/>
+              <path d="M-6,-10 L-10,-18 M6,-10 L10,-18" stroke="#1E293B" stroke-width="2"/>
+              <circle cx="-10" cy="-18" r="2.5" fill="#F59E0B"/>
+              <circle cx="10" cy="-18" r="2.5" fill="#F59E0B"/>
+              <rect x="-8" y="12" width="16" height="18" rx="3" fill="#10B981"/>
+              <line x1="8" y1="12" x2="16" y2="24" stroke="#F59E0B" stroke-width="3"/>
+            </g>
+            <rect x="55" y="15" width="150" height="24" rx="6" fill="#ffffff" stroke="#D97706" stroke-width="2"/>
+            <text x="130" y="31" font-size="10.5" font-weight="900" fill="#92400E" text-anchor="middle">CLASSROOM = BEEHIVE!</text>
+          </svg>
+        `
+      },
+      {
+        caseNum: 16,
+        sentence: "SPLASH! The little fish jumped into the pond.",
+        correctAnswer: "Onomatopoeia",
+        options: ["Simile", "Onomatopoeia", "Hyperbole", "Personification"],
+        explanation: "The word \"SPLASH\" imitates the sound of something entering water. This is onomatopoeia.",
+        hint: "The word 'SPLASH' sounds just like water spraying when something jumps into a pond!",
+        figureId: 'onomatopoeia',
+        sceneSvg: `
+          <svg viewBox="0 0 260 140">
+            <rect width="260" height="140" fill="#ecfeff" rx="8"/>
+            <path d="M0,105 Q65,95 130,105 T260,105 L260,140 L0,140 Z" fill="#38BDF8" stroke="#0284C7" stroke-width="2"/>
+            <ellipse cx="45" cy="118" rx="28" ry="10" fill="#16A34A"/>
+            <polygon points="45,118 60,110 55,120" fill="#38BDF8"/>
+            <circle cx="45" cy="112" r="6" fill="#F472B6"/>
+            <circle cx="45" cy="112" r="3" fill="#FEF08A"/>
+            <g transform="translate(105, 62) rotate(-25)">
+              <path d="M-25,0 C-15,-20 15,-20 25,0 C15,20 -15,20 -25,0 Z" fill="#F97316" stroke="#C2410C" stroke-width="2"/>
+              <path d="M-22,0 L-40,-15 L-32,0 L-40,15 Z" fill="#FB923C"/>
+              <path d="M-5,-16 L5,-24 L10,-15 Z" fill="#FDBA74"/>
+              <circle cx="16" cy="-4" r="5" fill="#ffffff" stroke="#1E293B" stroke-width="1.5"/>
+              <circle cx="17" cy="-4" r="2.5" fill="#1E293B"/>
+              <circle cx="18" cy="-5" r="1" fill="#ffffff"/>
+              <path d="M22,3 Q20,6 18,3" stroke="#C2410C" stroke-width="1.5" fill="none"/>
+            </g>
+            <path d="M85,105 C75,80 95,75 105,95 C115,75 135,80 125,105" fill="#E0F2FE" stroke="#0284C7" stroke-width="2"/>
+            <circle cx="80" cy="78" r="3.5" fill="#38BDF8"/>
+            <circle cx="95" cy="68" r="4.5" fill="#38BDF8"/>
+            <circle cx="120" cy="72" r="3.5" fill="#38BDF8"/>
+            <circle cx="135" cy="85" r="4" fill="#38BDF8"/>
+            <g transform="translate(195, 55)">
+              <polygon points="0,-28 14,-14 30,-22 22,-2 38,10 20,12 16,30 2,16 -12,28 -12,10 -30,8 -16,-4 -26,-20 -6,-14" fill="#FDE047" stroke="#EA580C" stroke-width="2.5"/>
+              <text x="3" y="6" font-size="14" font-weight="900" fill="#9A3412" text-anchor="middle" font-family="Impact, sans-serif">SPLASH!</text>
+            </g>
+          </svg>
+        `
+      }
+    ];
+
+
+    /* =========================================================
+       4. DETECTIVE DOT MASCOT LOGIC & SVG INJECTOR
+       ========================================================= */
+    function getDotSvgContent(state = 'neutral') {
+      const isHappy = state === 'celebrating';
+      const isThinking = state === 'thinking';
+
+      return `
+        <svg class="dot-svg ${state === 'celebrating' ? 'mascot-celebrate-anim' : 'mascot-breathe'}" viewBox="0 0 200 200">
+          <ellipse cx="100" cy="188" rx="65" ry="10" fill="#000000" opacity="0.25"/>
+          <path d="M75,178 L70,188 M80,178 L80,188 M85,178 L90,188" stroke="#EA580C" stroke-width="5" stroke-linecap="round"/>
+          <path d="M115,178 L110,188 M120,178 L120,188 M125,178 L130,188" stroke="#EA580C" stroke-width="5" stroke-linecap="round"/>
+          <ellipse cx="100" cy="120" rx="64" ry="68" fill="#D97706"/>
+          <ellipse cx="100" cy="130" rx="44" ry="48" fill="#FEF3C7"/>
+          <path d="M90,118 Q100,126 110,118" stroke="#F59E0B" stroke-width="3" fill="none" stroke-linecap="round"/>
+          <path d="M85,134 Q100,144 115,134" stroke="#F59E0B" stroke-width="3" fill="none" stroke-linecap="round"/>
+          <path d="M92,150 Q100,158 108,150" stroke="#F59E0B" stroke-width="3" fill="none" stroke-linecap="round"/>
+          <path d="M50,115 Q100,130 150,115 L154,162 Q100,176 46,162 Z" fill="#78350F" opacity="0.9"/>
+          <path d="M78,118 L100,145 L122,118" fill="#B45309"/>
+          <circle cx="100" cy="148" r="4.5" fill="#FBBF24" stroke="#78350F" stroke-width="1.5"/>
+          <circle cx="100" cy="160" r="4.5" fill="#FBBF24" stroke="#78350F" stroke-width="1.5"/>
+          ${!isHappy ? `
+            <circle cx="72" cy="85" r="24" fill="#ffffff" stroke="#78350F" stroke-width="3"/>
+            <circle cx="128" cy="85" r="24" fill="#ffffff" stroke="#78350F" stroke-width="3"/>
+            <circle cx="75" cy="85" r="14" fill="#FBBF24"/>
+            <circle cx="125" cy="85" r="14" fill="#FBBF24"/>
+            <circle cx="${isThinking ? '79' : '76'}" cy="${isThinking ? '81' : '85'}" r="8" fill="#172554"/>
+            <circle cx="${isThinking ? '127' : '124'}" cy="${isThinking ? '81' : '85'}" r="8" fill="#172554"/>
+            <circle cx="${isThinking ? '77' : '73'}" cy="${isThinking ? '78' : '81'}" r="3" fill="#ffffff"/>
+            <circle cx="${isThinking ? '125' : '121'}" cy="${isThinking ? '78' : '81'}" r="3" fill="#ffffff"/>
+          ` : `
+            <path d="M52,88 Q72,66 92,88" stroke="#78350F" stroke-width="6" fill="none" stroke-linecap="round"/>
+            <path d="M108,88 Q128,66 148,88" stroke="#78350F" stroke-width="6" fill="none" stroke-linecap="round"/>
+          `}
+          <polygon points="100,92 90,105 110,105" fill="#EA580C"/>
+          ${isThinking ? `
+            <path d="M50,60 Q70,72 88,72" stroke="#78350F" stroke-width="5" stroke-linecap="round"/>
+            <path d="M150,72 Q130,68 112,62" stroke="#78350F" stroke-width="5" stroke-linecap="round"/>
+          ` : `
+            <path d="M50,65 Q70,68 88,74" stroke="#78350F" stroke-width="4.5" stroke-linecap="round"/>
+            <path d="M150,65 Q130,68 112,74" stroke="#78350F" stroke-width="4.5" stroke-linecap="round"/>
+          `}
+          <ellipse cx="100" cy="62" rx="68" ry="14" fill="#92400E"/>
+          <path d="M52,60 C52,24 148,24 148,60 Z" fill="#B45309"/>
+          <path d="M75,34 L125,58 M125,34 L75,58" stroke="#78350F" stroke-width="2.5" opacity="0.6"/>
+          <ellipse cx="100" cy="27" rx="9" ry="6" fill="#EA580C"/>
+          <path d="M42,120 Q20,135 34,160 Q48,155 52,130 Z" fill="#B45309"/>
+          <g transform="translate(18, 125) rotate(-25)">
+            <circle cx="30" cy="30" r="22" fill="#E0F2FE" opacity="0.75" stroke="#FBBF24" stroke-width="5"/>
+            <line x1="45" y1="45" x2="68" y2="68" stroke="#78350F" stroke-width="7" stroke-linecap="round"/>
+            <path d="M20,20 A15,15 0 0,1 40,24" stroke="#ffffff" stroke-width="3" fill="none" stroke-linecap="round"/>
+          </g>
+          <path d="M158,120 Q180,135 166,160 Q152,155 148,130 Z" fill="#B45309"/>
+          ${isHappy ? `
+            <polygon points="35,40 40,50 50,50 42,56 45,66 35,60 25,66 28,56 20,50 30,50" fill="#FBBF24"/>
+            <polygon points="165,40 170,50 180,50 172,56 175,66 165,60 155,66 158,56 150,50 160,50" fill="#FBBF24"/>
+          ` : ''}
+        </svg>
+      `;
+    }
+
+
+    /* =========================================================
+       5. MAIN GAME ENGINE OBJECT
+       ========================================================= */
+    class DetectiveGame {
+      constructor() {
+        this.currentScreen = 'welcome';
+        this.currentCaseIndex = 0;
+        this.score = 0;
+        this.caseAttempts = [];
+        this.caseSolved = [];
+        this.isFullscreen = false;
+      }
+
+      init() {
+        this.caseAttempts = new Array(CASES_DATA.length).fill(0);
+        this.caseSolved = new Array(CASES_DATA.length).fill(false);
+        this.renderLearningCards();
+        this.renderTeacherJumpButtons();
+        this.updateScoreDisplay();
+        this.setCaseMascotState('neutral');
+
+        // Keyboard accessibility: 1-4 for option keys, Space for Next Case
+        window.addEventListener('keydown', (e) => {
+          if (this.currentScreen === 'case') {
+            if (['1', '2', '3', '4'].includes(e.key)) {
+              const optIdx = parseInt(e.key) - 1;
+              const btns = document.querySelectorAll('.option-card-btn');
+              if (btns[optIdx] && !btns[optIdx].disabled) {
+                btns[optIdx].click();
+              }
+            } else if (e.key === ' ' || e.key === 'Enter') {
+              const nextBtn = document.getElementById('next-case-btn');
+              const feedback = document.getElementById('feedback-panel');
+              if (feedback && feedback.classList.contains('success') && nextBtn) {
+                nextBtn.click();
+              }
+            }
+          }
+        });
+      }
+
+      showScreen(screenId) {
+        soundManager.playPop();
+        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+        const target = document.getElementById(`screen-${screenId}`);
+        if (target) {
+          target.classList.add('active');
+          this.currentScreen = screenId;
+        }
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+
+      startInvestigation() {
+        soundManager.playClick();
+        this.showScreen('learn');
+      }
+
+      goToCases() {
+        soundManager.playClick();
+        this.currentCaseIndex = 0;
+        this.renderCase(this.currentCaseIndex);
+        this.showScreen('case');
+      }
+
+      /* Screen 2: Render Learning Cards */
+      renderLearningCards() {
+        const container = document.getElementById('learning-cards-container');
+        if (!container) return;
+
+        container.innerHTML = FIGURES_DATA.map((fig, index) => `
+          <div class="figure-card ${fig.cardClass}" onclick="game.inspectFigure(${index})">
+            <div class="figure-card-top">
+              <div class="figure-badge-icon" style="font-size: 1.8rem;">
+                ${fig.badgeIcon}
+              </div>
+              <div>
+                <div class="figure-card-tag">Language Clue #${index + 1}</div>
+                <div class="figure-card-title">${fig.name}</div>
+              </div>
+            </div>
+
+            <div class="figure-illustration-box">
+              ${fig.svgScene}
+            </div>
+
+            <div class="figure-def">${fig.definition}</div>
+
+            <div class="figure-example-box">
+              "${fig.example}"
+            </div>
+
+            <div class="card-tap-hint">
+              <span>Inspect Clue</span>
+              <svg viewBox="0 0 24 24"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg>
+            </div>
+          </div>
+        `).join('');
+      }
+
+      renderTeacherJumpButtons() {
+        const grid = document.getElementById('teacher-jump-grid');
+        if (!grid) return;
+        grid.innerHTML = CASES_DATA.map((c, i) => `
+          <button class="ctrl-btn" style="background:var(--navy); min-width:44px; height:44px; font-weight:900; font-size:1rem;" onclick="game.jumpToCase(${i})" title="Jump to Case #${i+1}">
+            ${i + 1}
+          </button>
+        `).join('');
+      }
+
+      inspectFigure(index) {
+        soundManager.playClick();
+        const fig = FIGURES_DATA[index];
+        if (!fig) return;
+
+        document.getElementById('modal-title').textContent = fig.name;
+        document.getElementById('modal-icon-wrap').innerHTML = `<span style="font-size: 2.2rem;">${fig.badgeIcon}</span>`;
+        document.getElementById('modal-illustration-wrap').innerHTML = fig.svgScene;
+        document.getElementById('modal-def').innerHTML = `<strong>Definition:</strong> ${fig.definition}`;
+        document.getElementById('modal-secret-tip').innerHTML = `<strong>🔍 Detective Secret Tip:</strong> ${fig.secretTip}`;
+
+        const examplesList = document.getElementById('modal-examples-list');
+        examplesList.innerHTML = fig.moreExamples.map(ex => `<li>"${ex}"</li>`).join('');
+
+        document.getElementById('inspect-modal').classList.add('open');
+      }
+
+      closeInspectModal() {
+        soundManager.playPop();
+        document.getElementById('inspect-modal').classList.remove('open');
+      }
+
+      /* Screen 3: Render Mystery Case Question */
+      renderCase(index) {
+        const caseItem = CASES_DATA[index];
+        if (!caseItem) return;
+
+        // Reset feedback
+        const feedback = document.getElementById('feedback-panel');
+        feedback.className = 'feedback-panel';
+        feedback.style.display = 'none';
+        const actionRow = document.getElementById('feedback-action-row');
+        if (actionRow) actionRow.style.display = 'flex';
+
+        // Update Next Button Text for the final case
+        const nextBtn = document.getElementById('next-case-btn');
+        if (nextBtn) {
+          if (index === CASES_DATA.length - 1) {
+            nextBtn.innerHTML = `<span>VIEW DETECTIVE REPORT</span> <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>`;
+          } else {
+            nextBtn.innerHTML = `<span>NEXT CASE</span> <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M5 13h11.86l-5.43 5.43 1.42 1.42L21.14 12l-8.29-8.29-1.42 1.42 5.43 5.43H5v2z"/></svg>`;
+          }
+        }
+
+        // Update progress indicators
+        document.getElementById('case-step-label').textContent = `CASE ${index + 1} OF 6`;
+        const percent = ((index + 1) / CASES_DATA.length) * 100;
+        document.getElementById('case-progress-bar').style.width = `${percent}%`;
+
+        // Render Folder Tabs
+        this.renderFolderTabs();
+
+        // Update sentence & scenes
+        document.getElementById('case-sentence-text').textContent = `"${caseItem.sentence}"`;
+        document.getElementById('case-scene-box').innerHTML = caseItem.sceneSvg;
+
+        // Render Options Grid (Letters A, B, C, D)
+        const letters = ['A', 'B', 'C', 'D'];
+        const optionsGrid = document.getElementById('options-grid');
+        optionsGrid.innerHTML = caseItem.options.map((opt, optIdx) => `
+          <button class="option-card-btn" id="opt-btn-${optIdx}" onclick="game.checkAnswer('${opt}', ${optIdx})">
+            <div class="option-letter">${letters[optIdx]}</div>
+            <div class="option-text">${opt}</div>
+          </button>
+        `).join('');
+
+        // Dossier stamp and solved state handling
+        const stamp = document.getElementById('dossier-stamp');
+        if (this.caseSolved[index]) {
+          stamp.textContent = "SOLVED ✓";
+          stamp.style.color = "#059669";
+          stamp.style.borderColor = "#059669";
+
+          // If already solved, display explanation and celebrate
+          this.setCaseMascotState('celebrating');
+          document.getElementById('case-dot-bubble').textContent = "You already cracked this case! Great detective work!";
+          feedback.className = 'feedback-panel success';
+          feedback.style.display = 'block';
+          document.getElementById('feedback-icon').textContent = '🌟';
+          document.getElementById('feedback-title').textContent = 'CASE SOLVED! YOU ARE A SUPER DETECTIVE!';
+          document.getElementById('feedback-explanation').textContent = caseItem.explanation;
+
+          // Highlight the correct answer option
+          caseItem.options.forEach((opt, optIdx) => {
+            const btn = document.getElementById(`opt-btn-${optIdx}`);
+            if (btn) {
+              if (opt === caseItem.correctAnswer) {
+                btn.classList.add('correct-opt');
+              }
+              btn.disabled = true;
+            }
+          });
+        } else {
+          stamp.textContent = "CONFIDENTIAL";
+          stamp.style.color = "#ef4444";
+          stamp.style.borderColor = "#ef4444";
+          this.setCaseMascotState('neutral');
+          document.getElementById('case-dot-bubble').textContent = "Inspect the clues cadet! Which figure of speech fits best?";
+        }
+      }
+
+      renderFolderTabs() {
+        const foldersTrack = document.getElementById('folders-track');
+        if (!foldersTrack) return;
+
+        foldersTrack.innerHTML = CASES_DATA.map((c, i) => {
+          let stateClass = '';
+          let iconSvg = '<svg viewBox="0 0 24 24"><path d="M10 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"/></svg>';
+          if (this.caseSolved[i]) {
+            stateClass = 'solved';
+            iconSvg = '<svg viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg>';
+          } else if (i === this.currentCaseIndex) {
+            stateClass = 'active';
+          }
+          return `
+            <div class="folder-tab ${stateClass}" onclick="game.jumpToCase(${i})" title="Jump to Case #${i+1}">
+              ${iconSvg}
+              <span>Case ${i + 1}</span>
+            </div>
+          `;
+        }).join('');
+      }
+
+      setCaseMascotState(state) {
+        const wrap = document.getElementById('case-mascot-wrap');
+        if (wrap) {
+          wrap.innerHTML = getDotSvgContent(state);
+        }
+      }
+
+      interactCaseDot() {
+        soundManager.playPop();
+        const bubble = document.getElementById('case-dot-bubble');
+        const thoughts = [
+          "Hoo-hoo! Look closely at the words! Can you spot the hidden clue?",
+          "Check if it's comparing with 'like' or 'as', or giving human actions to things!",
+          "Take your time, Detective! You have sharp detective eyes!",
+          "Say the sentence out loud to see if you hear sound words or bouncing letters!"
+        ];
+        if (bubble) {
+          bubble.textContent = thoughts[Math.floor(Math.random() * thoughts.length)];
+        }
+      }
+
+      checkAnswer(selectedOption, optIdx) {
+        const caseItem = CASES_DATA[this.currentCaseIndex];
+        const selectedBtn = document.getElementById(`opt-btn-${optIdx}`);
+        const feedback = document.getElementById('feedback-panel');
+
+        this.caseAttempts[this.currentCaseIndex]++;
+
+        if (selectedOption === caseItem.correctAnswer) {
+          // CORRECT ANSWER
+          soundManager.playCorrect();
+          confettiEngine.burst(65);
+
+          // Mark option
+          selectedBtn.classList.add('correct-opt');
+
+          // Disable options
+          document.querySelectorAll('.option-card-btn').forEach(b => b.disabled = true);
+
+          // Update Score (+10 Points if first time solving this case)
+          if (!this.caseSolved[this.currentCaseIndex]) {
+            this.score += 10;
+            this.caseSolved[this.currentCaseIndex] = true;
+            this.updateScoreDisplay();
+          }
+
+          // Update Mascot to celebration
+          this.setCaseMascotState('celebrating');
+          document.getElementById('case-dot-bubble').textContent = "Hoo-hoo! Brilliant work! You cracked the code!";
+
+          // Show Success Feedback Panel
+          feedback.className = 'feedback-panel success';
+          feedback.style.display = 'block';
+          const actionRow = document.getElementById('feedback-action-row');
+          if (actionRow) actionRow.style.display = 'flex';
+
+          document.getElementById('feedback-icon').textContent = '🌟';
+          document.getElementById('feedback-title').textContent = 'CASE SOLVED! YOU ARE A SUPER DETECTIVE!';
+          document.getElementById('feedback-explanation').textContent = caseItem.explanation;
+
+          // Update Dossier Stamp
+          const stamp = document.getElementById('dossier-stamp');
+          stamp.textContent = "SOLVED ✓";
+          stamp.style.color = "#059669";
+          stamp.style.borderColor = "#059669";
+
+          // Update Folder tabs
+          this.renderFolderTabs();
+
+        } else {
+          // INCORRECT ANSWER (Encouraging, gentle, no point penalty)
+          soundManager.playWrong();
+
+          selectedBtn.classList.add('wrong-opt');
+          setTimeout(() => {
+            selectedBtn.classList.remove('wrong-opt');
+          }, 800);
+
+          // Mascot looks thoughtful/encouraging
+          this.setCaseMascotState('thinking');
+          document.getElementById('case-dot-bubble').textContent = "Almost there, Detective! Look carefully at the clue.";
+
+          // Show Gentle Hint Panel
+          feedback.className = 'feedback-panel hint';
+          feedback.style.display = 'block';
+          const actionRow = document.getElementById('feedback-action-row');
+          if (actionRow) actionRow.style.display = 'none';
+
+          document.getElementById('feedback-icon').textContent = '💡';
+          document.getElementById('feedback-title').textContent = 'Almost there, Detective! Look carefully at the clue:';
+          document.getElementById('feedback-explanation').textContent = caseItem.hint;
+        }
+      }
+
+      nextCase() {
+        soundManager.playClick();
+        if (this.currentCaseIndex < CASES_DATA.length - 1) {
+          this.currentCaseIndex++;
+          this.renderCase(this.currentCaseIndex);
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        } else {
+          this.showResults();
+        }
+      }
+
+      /* Screen 4: Results & Awards */
+      showResults() {
+        soundManager.playVictoryFanfare();
+        confettiEngine.burst(110);
+        setTimeout(() => confettiEngine.burst(90), 800);
+
+        const maxScore = CASES_DATA.length * 10;
+        document.getElementById('final-score-val').textContent = this.score;
+        const finalMax = document.getElementById('final-max-score-val');
+        if (finalMax) finalMax.textContent = maxScore;
+
+        // Performance message logic calibrated for 16 cases (Max: 160 pts)
+        const banner = document.getElementById('performance-banner-text');
+        const percent = (this.score / maxScore) * 100;
+        if (percent >= 90) {
+          banner.textContent = "Outstanding! You are a Master Language Detective! (All cases cracked!)";
+        } else if (percent >= 60) {
+          banner.textContent = "Fantastic work! You have a sharp detective mind!";
+        } else {
+          banner.textContent = "Good effort! Keep practising and you will become a great detective!";
+        }
+
+        // Render 6 Unlocked Badges
+        const badgesGrid = document.getElementById('badges-results-grid');
+        badgesGrid.innerHTML = FIGURES_DATA.map((fig) => `
+          <div class="detective-badge-card">
+            <div class="badge-icon-wrap" style="background:${fig.badgeColor};">
+              <span style="font-size:2.2rem;">${fig.badgeIcon}</span>
+            </div>
+            <div class="badge-name">${fig.name} Detective</div>
+            <div class="badge-star-row">⭐⭐⭐⭐⭐</div>
+            <span style="font-size:0.85rem; font-weight:800; color:#059669;">BADGE UNLOCKED</span>
+          </div>
+        `).join('');
+
+        this.showScreen('results');
+      }
+
+      updateScoreDisplay() {
+        const maxScore = CASES_DATA.length * 10;
+        const text = `${this.score} / ${maxScore} PTS`;
+        document.getElementById('header-score-text').textContent = text;
+        const currentScore = document.getElementById('current-score-val');
+        if (currentScore) currentScore.textContent = this.score;
+        const maxScoreEl = document.getElementById('max-score-val');
+        if (maxScoreEl) maxScoreEl.textContent = maxScore;
+      }
+
+      resetGame() {
+        soundManager.playClick();
+        this.score = 0;
+        this.currentCaseIndex = 0;
+        this.caseAttempts = new Array(CASES_DATA.length).fill(0);
+        this.caseSolved = new Array(CASES_DATA.length).fill(false);
+        this.updateScoreDisplay();
+        this.showScreen('welcome');
+      }
+
+      confirmResetGame() {
+        if (confirm("Reset all game progress and score back to start?")) {
+          this.closeTeacherModal();
+          this.resetGame();
+        }
+      }
+
+      jumpToCase(caseIdx) {
+        soundManager.playClick();
+        this.closeTeacherModal();
+        this.currentCaseIndex = caseIdx;
+        this.renderCase(this.currentCaseIndex);
+        this.showScreen('case');
+      }
+
+      restartCurrentCase() {
+        soundManager.playClick();
+        this.closeTeacherModal();
+        this.renderCase(this.currentCaseIndex);
+        this.showScreen('case');
+      }
+
+      interactDot(screen) {
+        soundManager.playPop();
+        const bubble = document.getElementById('welcome-dot-bubble');
+        const greetings = [
+          "Hoo-hoo! Tap 'Start Investigation' to crack the secret codes!",
+          "Did you know? Figures of speech make our language colourful and fun!",
+          "I have my magnifying glass ready! Let's explore together!"
+        ];
+        if (bubble) {
+          bubble.innerHTML = `"${greetings[Math.floor(Math.random() * greetings.length)]}"`;
+        }
+      }
+
+      /* Fullscreen Toggle */
+      toggleFullscreen() {
+        soundManager.playClick();
+        const doc = document.documentElement;
+        const iconEnter = document.getElementById('fs-icon-enter');
+        const iconExit = document.getElementById('fs-icon-exit');
+
+        if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+          if (doc.requestFullscreen) {
+            doc.requestFullscreen();
+          } else if (doc.webkitRequestFullscreen) {
+            doc.webkitRequestFullscreen();
+          }
+          if (iconEnter) iconEnter.style.display = 'none';
+          if (iconExit) iconExit.style.display = 'block';
+          this.isFullscreen = true;
+        } else {
+          if (document.exitFullscreen) {
+            document.exitFullscreen();
+          } else if (document.webkitExitFullscreen) {
+            document.webkitExitFullscreen();
+          }
+          if (iconEnter) iconEnter.style.display = 'block';
+          if (iconExit) iconExit.style.display = 'none';
+          this.isFullscreen = false;
+        }
+      }
+
+      /* Teacher Controls Modal */
+      openTeacherModal() {
+        soundManager.playPop();
+        this.updateTeacherSoundLabel();
+        document.getElementById('teacher-modal').classList.add('open');
+      }
+
+      closeTeacherModal() {
+        soundManager.playPop();
+        document.getElementById('teacher-modal').classList.remove('open');
+      }
+
+      updateTeacherSoundLabel() {
+        const btn = document.getElementById('teacher-sound-btn');
+        if (btn) {
+          btn.textContent = soundManager.muted ? 'SOUND: OFF' : 'SOUND: ON';
+        }
+      }
+    }
+
+    // Initialize Game Engine when DOM is ready
+    const game = new DetectiveGame();
+    window.addEventListener('DOMContentLoaded', () => {
+      game.init();
+    });
+  </script>
+</body>
+</html>
